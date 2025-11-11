@@ -914,7 +914,7 @@ def one_type_line_geom_to_vectors(line_geom):
     for line in line_geom:
         if not line.is_empty:
             if line.geom_type == 'MultiLineString':
-                for line_i in line:
+                for line_i in line.geoms:
                     line_vectors.append(sample_pts_from_line(line_i))
             elif line.geom_type == 'LineString':
                 line_vectors.append(sample_pts_from_line(line))
@@ -943,7 +943,7 @@ def poly_geoms_to_vectors(polygon_geom):
     interiors = []
     if union_segments.geom_type != 'MultiPolygon':
         union_segments = MultiPolygon([union_segments])
-    for poly in union_segments:
+    for poly in union_segments.geoms:
         exteriors.append(poly.exterior)
         for inter in poly.interiors:
             interiors.append(inter)
@@ -1000,7 +1000,7 @@ def line_geom_to_mask(layer_geom, confidence_levels, canvas_size, thickness, idx
         if not new_line.is_empty:
             confidence_levels.append(confidence)
             if new_line.geom_type == 'MultiLineString':
-                for new_single_line in new_line:
+                for new_single_line in new_line.geoms:
                     map_mask, idx = mask_for_lines(new_single_line, map_mask, thickness, idx, type, angle_class)
             else:
                 map_mask, idx = mask_for_lines(new_line, map_mask, thickness, idx, type, angle_class)
