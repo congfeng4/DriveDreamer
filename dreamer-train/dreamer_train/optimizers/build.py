@@ -4,7 +4,6 @@ from ..registry import Registry, build_module
 
 OPTIMIZERS = Registry()
 
-
 OPTIMIZERS.register_module(optim.Adadelta)
 OPTIMIZERS.register_module(optim.Adagrad)
 OPTIMIZERS.register_module(optim.Adam)

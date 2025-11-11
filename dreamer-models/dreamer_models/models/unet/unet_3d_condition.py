@@ -47,7 +47,6 @@ from .unet_3d_blocks import (
     get_up_block,
 )
 
-
 logger = logging.get_logger(__name__)  # pylint: disable=invalid-name
 
 
@@ -101,34 +100,34 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin)
 
     @register_to_config
     def __init__(
-        self,
-        sample_size: Optional[int] = None,
-        in_channels: int = 4,
-        out_channels: int = 4,
-        down_block_types: Tuple[str, ...] = (
-            "CrossAttnDownBlock3D",
-            "CrossAttnDownBlock3D",
-            "CrossAttnDownBlock3D",
-            "DownBlock3D",
-        ),
-        up_block_types: Tuple[str, ...] = (
-            "UpBlock3D",
-            "CrossAttnUpBlock3D",
-            "CrossAttnUpBlock3D",
-            "CrossAttnUpBlock3D",
-        ),
-        block_out_channels: Tuple[int, ...] = (320, 640, 1280, 1280),
-        layers_per_block: int = 2,
-        downsample_padding: int = 1,
-        mid_block_scale_factor: float = 1,
-        act_fn: str = "silu",
-        norm_num_groups: Optional[int] = 32,
-        norm_eps: float = 1e-5,
-        cross_attention_dim: int = 1024,
-        attention_head_dim: Union[int, Tuple[int]] = 64,
-        num_attention_heads: Optional[Union[int, Tuple[int]]] = None,
-        time_cond_proj_dim: Optional[int] = None,
-        num_frames: Optional[int] = None,
+            self,
+            sample_size: Optional[int] = None,
+            in_channels: int = 4,
+            out_channels: int = 4,
+            down_block_types: Tuple[str, ...] = (
+                    "CrossAttnDownBlock3D",
+                    "CrossAttnDownBlock3D",
+                    "CrossAttnDownBlock3D",
+                    "DownBlock3D",
+            ),
+            up_block_types: Tuple[str, ...] = (
+                    "UpBlock3D",
+                    "CrossAttnUpBlock3D",
+                    "CrossAttnUpBlock3D",
+                    "CrossAttnUpBlock3D",
+            ),
+            block_out_channels: Tuple[int, ...] = (320, 640, 1280, 1280),
+            layers_per_block: int = 2,
+            downsample_padding: int = 1,
+            mid_block_scale_factor: float = 1,
+            act_fn: str = "silu",
+            norm_num_groups: Optional[int] = 32,
+            norm_eps: float = 1e-5,
+            cross_attention_dim: int = 1024,
+            attention_head_dim: Union[int, Tuple[int]] = 64,
+            num_attention_heads: Optional[Union[int, Tuple[int]]] = None,
+            time_cond_proj_dim: Optional[int] = None,
+            num_frames: Optional[int] = None,
     ):
         super().__init__()
 
@@ -553,19 +552,19 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin)
             self.set_attn_processor(self.original_attn_processors)
 
     def forward(
-        self,
-        sample: torch.Tensor,
-        timestep: Union[torch.Tensor, float, int],
-        encoder_hidden_states: torch.Tensor,
-        class_labels: Optional[torch.Tensor] = None,
-        timestep_cond: Optional[torch.Tensor] = None,
-        attention_mask: Optional[torch.Tensor] = None,
-        cross_attention_kwargs: Optional[Dict[str, Any]] = None,
-        down_block_additional_residuals: Optional[Tuple[torch.Tensor]] = None,
-        conv_in_additional_residual: Optional[torch.Tensor] = None,
-        added_cond_kwargs: Optional[Dict[str, torch.Tensor]] = None,
-        mid_block_additional_residual: Optional[torch.Tensor] = None,
-        return_dict: bool = True,
+            self,
+            sample: torch.Tensor,
+            timestep: Union[torch.Tensor, float, int],
+            encoder_hidden_states: torch.Tensor,
+            class_labels: Optional[torch.Tensor] = None,
+            timestep_cond: Optional[torch.Tensor] = None,
+            attention_mask: Optional[torch.Tensor] = None,
+            cross_attention_kwargs: Optional[Dict[str, Any]] = None,
+            down_block_additional_residuals: Optional[Tuple[torch.Tensor]] = None,
+            conv_in_additional_residual: Optional[torch.Tensor] = None,
+            added_cond_kwargs: Optional[Dict[str, torch.Tensor]] = None,
+            mid_block_additional_residual: Optional[torch.Tensor] = None,
+            return_dict: bool = True,
     ) -> Union[UNet3DConditionOutput, Tuple[torch.Tensor]]:
         r"""
         The [`UNet3DConditionModel`] forward method.
@@ -608,7 +607,7 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin)
         # The overall upsampling factor is equal to 2 ** (# num of upsampling layears).
         # However, the upsampling interpolation output size can be forced to fit any upsampling size
         # on the fly if necessary.
-        default_overall_up_factor = 2**self.num_upsamplers
+        default_overall_up_factor = 2 ** self.num_upsamplers
 
         # upsample size should be forwarded when sample is not a multiple of `default_overall_up_factor`
         forward_upsample_size = False
@@ -639,7 +638,7 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin)
 
         # broadcast to batch dimension in a way that's compatible with ONNX/Core ML
         sample = sample.reshape(-1, sample.shape[1], self.num_frames, *sample.shape[2:])
-        
+
         num_frames = sample.shape[2]
         timesteps = timesteps.expand(sample.shape[0])
         t_emb = self.time_proj(timesteps)
@@ -658,13 +657,13 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin)
         sample = self.conv_in(sample)
         if conv_in_additional_residual is not None:
             sample = sample + conv_in_additional_residual
-            
+
         sample = self.transformer_in(
             sample,
             num_frames=num_frames,
             return_dict=False,
         )[0]
-        
+
         # 2.5 GLIGEN position net
         if cross_attention_kwargs is not None and cross_attention_kwargs.get('gligen', None) is not None:
             cross_attention_kwargs = cross_attention_kwargs.copy()
@@ -692,7 +691,7 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin)
             new_down_block_res_samples = ()
 
             for down_block_res_sample, down_block_additional_residual in zip(
-                down_block_res_samples, down_block_additional_residuals
+                    down_block_res_samples, down_block_additional_residuals
             ):
                 down_block_res_sample = down_block_res_sample + down_block_additional_residual
                 new_down_block_res_samples += (down_block_res_sample,)
@@ -717,7 +716,7 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin)
         for i, upsample_block in enumerate(self.up_blocks):
             is_final_block = i == len(self.up_blocks) - 1
 
-            res_samples = down_block_res_samples[-len(upsample_block.resnets) :]
+            res_samples = down_block_res_samples[-len(upsample_block.resnets):]
             down_block_res_samples = down_block_res_samples[: -len(upsample_block.resnets)]
 
             # if we have not reached the final block and need to forward the
@@ -759,10 +758,10 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin)
 
     @classmethod
     def from_unet(cls, unet, dtype_for_2d, dtype_for_3d=torch.float32, tune_all_unet_params=False, **kwargs):
-        in_channels=unet.in_channels
-        cross_attention_dim=unet.cross_attention_dim
-        attention_head_dim=unet.attention_head_dim
-        sample_size=unet.sample_size  # no meaning, for compatibility is_unet_version_less_0_9_0 in diffusers
+        in_channels = unet.in_channels
+        cross_attention_dim = unet.cross_attention_dim
+        attention_head_dim = unet.attention_head_dim
+        sample_size = unet.sample_size  # no meaning, for compatibility is_unet_version_less_0_9_0 in diffusers
         unet3d_model_path = kwargs.pop('unet3d_model_path', None)
         unet3d = cls(
             in_channels=in_channels,
@@ -771,7 +770,7 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin)
             sample_size=sample_size,
             **kwargs,
         )
-        
+
         loaded_names = []
         missing_names = []
         for name, param in unet3d.named_parameters():
@@ -790,7 +789,7 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin)
                 param.to(dtype_for_3d)
                 param.requires_grad_(True)
         assert len(loaded_names) == len(unet.state_dict())
-        
+
         if unet3d_model_path is not None:
             unet_3d_weights = torch.load(os.path.join(unet3d_model_path, WEIGHTS_NAME))
             for name, param in unet3d.named_parameters():
@@ -806,6 +805,5 @@ class UNet3DConditionModel(ModelMixin, ConfigMixin, UNet2DConditionLoadersMixin)
                     if name in missing_names:
                         missing_names.remove(name)
             assert len(missing_names) == 0
-                    
-        return unet3d
 
+        return unet3d

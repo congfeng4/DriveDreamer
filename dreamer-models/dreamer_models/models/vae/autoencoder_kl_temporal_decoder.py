@@ -26,7 +26,7 @@ class AutoencoderKLTemporalDecoder(_AutoencoderKLTemporalDecoder):
 
     @apply_forward_hook
     def encode(
-        self, x: torch.FloatTensor, return_dict: bool = True
+            self, x: torch.FloatTensor, return_dict: bool = True
     ) -> Union[AutoencoderKLOutput, Tuple[DiagonalGaussianDistribution]]:
         """Encode a batch of images into latents.
 
@@ -56,10 +56,10 @@ class AutoencoderKLTemporalDecoder(_AutoencoderKLTemporalDecoder):
 
     @apply_forward_hook
     def decode(
-        self,
-        z: torch.FloatTensor,
-        num_frames: int = 1,
-        return_dict: bool = True,
+            self,
+            z: torch.FloatTensor,
+            num_frames: int = 1,
+            return_dict: bool = True,
     ) -> Union[DecoderOutput, torch.FloatTensor]:
         """Decode a batch of images.
 
@@ -79,7 +79,7 @@ class AutoencoderKLTemporalDecoder(_AutoencoderKLTemporalDecoder):
             image_only_indicator = torch.zeros(1, num_frames, dtype=z.dtype, device=z.device)
             decodeds = []
             for i in range(batch_size):
-                z_slice = z[i * num_frames : (i + 1) * num_frames]
+                z_slice = z[i * num_frames: (i + 1) * num_frames]
                 decoded = self.decoder(z_slice, num_frames=num_frames, image_only_indicator=image_only_indicator)
                 decodeds.append(decoded)
             decoded = torch.cat(decodeds)

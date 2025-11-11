@@ -11,20 +11,20 @@ from dreamer_models import utils as gm_utils
 
 class PromptTransform:
     def __init__(
-        self,
-        model_mode,
-        model_path,
-        prompt_mode='default',
-        prompt_embeds_mode='default',
-        default_prompt='',
-        default_prompt_prob=0.0,
-        clean_prompt=False,
-        max_length=None,
-        with_attention_mask=False,
-        only_tokenizer=False,
-        with_cache=False,
-        cache_path=None,
-        is_train=False,
+            self,
+            model_mode,
+            model_path,
+            prompt_mode='default',
+            prompt_embeds_mode='default',
+            default_prompt='',
+            default_prompt_prob=0.0,
+            clean_prompt=False,
+            max_length=None,
+            with_attention_mask=False,
+            only_tokenizer=False,
+            with_cache=False,
+            cache_path=None,
+            is_train=False,
     ):
         if only_tokenizer:
             self.transform = _PromptTokenizerTransform(model_mode, gm_utils.get_model_path(model_path))

@@ -26,7 +26,7 @@ def get_rel_path(abs_path, data_dir=None):
     data_dirs.append(utils.get_data_dir())
     for data_dir in data_dirs:
         if abs_path.startswith(data_dir):
-            rel_path = abs_path[len(data_dir) :]
+            rel_path = abs_path[len(data_dir):]
             if rel_path[0] == '/':
                 rel_path = rel_path[1:]
             return rel_path

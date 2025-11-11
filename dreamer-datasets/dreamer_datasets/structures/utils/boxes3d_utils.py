@@ -369,7 +369,7 @@ def crop_corners3d(corners3d, z_b=0.5):
             corespoding_pts = corners3d[i, opposite_idx]
             k_scale = (corespoding_pts[:, 2] - z_b) / (corespoding_pts[:, 2] - ori_back_pts[:, 2])  # 8
             to_be_adjusted_pts[:, :2] = corespoding_pts[:, :2] - k_scale[:, None] * (
-                corespoding_pts[:, :2] - ori_back_pts[:, :2]
+                    corespoding_pts[:, :2] - ori_back_pts[:, :2]
             )
             corners3d[i, back_cam_mask] = to_be_adjusted_pts
     return corners3d
@@ -400,14 +400,14 @@ def points3d_in_boxes3d(points3d, boxes3d, rot_axis):
 
 
 def overlaps(
-    boxes3d_a,
-    boxes3d_b,
-    method,
-    mode='iou',
-    offset=0,
-    eps=1e-6,
-    rot_axis=None,
-    bev_axis=None,
+        boxes3d_a,
+        boxes3d_b,
+        method,
+        mode='iou',
+        offset=0,
+        eps=1e-6,
+        rot_axis=None,
+        bev_axis=None,
 ):
     # boxes3d_a: (n, 9)
     # boxes3d_b: (m, 9)

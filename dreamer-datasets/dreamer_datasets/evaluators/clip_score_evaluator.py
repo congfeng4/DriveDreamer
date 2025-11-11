@@ -7,11 +7,11 @@ from transformers import CLIPModel, CLIPProcessor
 
 class CLIPScoreEvaluator:
     def __init__(
-        self,
-        model_path,
-        device=None,
-        dtype=None,
-        local_files_only=True,
+            self,
+            model_path,
+            device=None,
+            dtype=None,
+            local_files_only=True,
     ):
         self.model_path = model_path
         self.device = device

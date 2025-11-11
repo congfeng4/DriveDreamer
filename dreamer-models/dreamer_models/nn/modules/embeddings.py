@@ -24,15 +24,15 @@ class PatchEmbed(nn.Module):
     """2D Image to Patch Embedding."""
 
     def __init__(
-        self,
-        height=224,
-        width=224,
-        patch_size=16,
-        in_channels=3,
-        embed_dim=768,
-        layer_norm=False,
-        bias=True,
-        with_pos_embed=True,
+            self,
+            height=224,
+            width=224,
+            patch_size=16,
+            in_channels=3,
+            embed_dim=768,
+            layer_norm=False,
+            bias=True,
+            with_pos_embed=True,
     ):
         super().__init__()
         self.patch_size = patch_size

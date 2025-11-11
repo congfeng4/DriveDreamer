@@ -10,7 +10,8 @@ import diffusers
 import torch
 import transformers
 from accelerate import Accelerator, DistributedType, skip_first_batches
-from accelerate.utils import DataLoaderConfiguration, DistributedDataParallelKwargs, ProjectConfiguration, set_seed, release_memory
+from accelerate.utils import DataLoaderConfiguration, DistributedDataParallelKwargs, ProjectConfiguration, set_seed, \
+    release_memory
 from diffusers.training_utils import EMAModel
 from diffusers.utils import WEIGHTS_NAME
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import apply_activation_checkpointing
@@ -30,27 +31,27 @@ from ..transforms import build_transform
 
 class Trainer:
     def __init__(
-        self,
-        project_dir,
-        max_epochs=0,
-        max_steps=0,
-        gradient_accumulation_steps=1,
-        mixed_precision=None,
-        loss_nan_total_limit=100,
-        checkpoint_interval=1,
-        checkpoint_total_limit=-1,
-        checkpoint_keeps=None,
-        checkpoint_save_optimizer=False,
-        log_with=None,
-        log_interval=100,
-        with_ema=False,
-        activation_checkpointing=False,
-        activation_class_names=None,
-        find_unused_parameters=False,
-        broadcast_buffers=True,
-        allow_tf32=True,
-        seed=6666,
-        **kwargs,
+            self,
+            project_dir,
+            max_epochs=0,
+            max_steps=0,
+            gradient_accumulation_steps=1,
+            mixed_precision=None,
+            loss_nan_total_limit=100,
+            checkpoint_interval=1,
+            checkpoint_total_limit=-1,
+            checkpoint_keeps=None,
+            checkpoint_save_optimizer=False,
+            log_with=None,
+            log_interval=100,
+            with_ema=False,
+            activation_checkpointing=False,
+            activation_class_names=None,
+            find_unused_parameters=False,
+            broadcast_buffers=True,
+            allow_tf32=True,
+            seed=6666,
+            **kwargs,
     ):
         assert seed > 0
         set_seed(seed)
@@ -577,7 +578,7 @@ class Trainer:
                     if hasattr(model[model_name], 'save_config'):
                         model[model_name].save_config(model_output_dir)
                     sub_state_dict = {
-                        k[len(model_name) + 1 :]: v for k, v in state_dict.items() if k.startswith(model_name)
+                        k[len(model_name) + 1:]: v for k, v in state_dict.items() if k.startswith(model_name)
                     }
                     output_path = os.path.join(model_output_dir, WEIGHTS_NAME)
                     self.logger.info(f'Save {model_name} to {output_path}')
@@ -604,7 +605,7 @@ class Trainer:
                         if hasattr(model[model_name], 'save_config'):
                             model[model_name].save_config(model_output_dir)
                         sub_state_dict = {
-                            k[len(model_name) + 1 :]: v for k, v in state_dict.items() if k.startswith(model_name)
+                            k[len(model_name) + 1:]: v for k, v in state_dict.items() if k.startswith(model_name)
                         }
                         output_path = os.path.join(model_output_dir, WEIGHTS_NAME)
                         self.logger.info(f'Save {model_name}_ema to {output_path}')

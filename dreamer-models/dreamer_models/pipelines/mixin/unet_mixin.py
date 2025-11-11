@@ -6,13 +6,13 @@ from ... import utils
 
 class UNetMixin:
     def forward_unet(
-        self,
-        cur_step,
-        latent_model_input,
-        num_frames=None,
-        chunk_size=None,
-        unet=None,
-        **kwargs,
+            self,
+            cur_step,
+            latent_model_input,
+            num_frames=None,
+            chunk_size=None,
+            unet=None,
+            **kwargs,
     ):
         unet = unet or self.unet
         if num_frames is not None:
@@ -71,12 +71,12 @@ def ordered_halving(val):
 
 
 def uniform(
-    cur_step,
-    num_frames,
-    chunk_size,
-    stride=1,
-    overlap=-1,
-    closed_loop=False,
+        cur_step,
+        num_frames,
+        chunk_size,
+        stride=1,
+        overlap=-1,
+        closed_loop=False,
 ):
     assert num_frames > chunk_size
     if overlap == -1:

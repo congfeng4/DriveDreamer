@@ -178,7 +178,7 @@ def pad_image(image, dst_size, mode='top_left', pad_value=0):
         x1 = (dst_width - width) // 2
     else:
         assert False
-    new_image[y1 : y1 + height, x1 : x1 + width] = image
+    new_image[y1: y1 + height, x1: x1 + width] = image
     if is_pil:
         new_image = Image.fromarray(new_image)
     return new_image

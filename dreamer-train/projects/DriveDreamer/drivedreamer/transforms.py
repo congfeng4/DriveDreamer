@@ -13,24 +13,24 @@ from .utils import generate_box_label, remove_none_label
 
 class DriveDreamerTransform:
     def __init__(
-        self,
-        dst_size,
-        mode,
-        max_size=2048,
-        multiple=64,
-        dd_name=None,
-        dd_resample=None,
-        thickness=5,
-        pos_name=None,
-        max_objs=100,
-        empty_prob=0.0,
-        drop_text_or_image_prob=0.0,
-        random_choice=None,
-        prompt_name='sd',
-        prompt_mode='default',
-        default_prompt=None,
-        with_cache=False,
-        is_train=False,
+            self,
+            dst_size,
+            mode,
+            max_size=2048,
+            multiple=64,
+            dd_name=None,
+            dd_resample=None,
+            thickness=5,
+            pos_name=None,
+            max_objs=100,
+            empty_prob=0.0,
+            drop_text_or_image_prob=0.0,
+            random_choice=None,
+            prompt_name='sd',
+            prompt_mode='default',
+            default_prompt=None,
+            with_cache=False,
+            is_train=False,
     ):
         self.dd_name = dd_name
         self.pos_name = pos_name
@@ -111,14 +111,14 @@ class DriveDreamerTransform:
 
 class ImageTransform:
     def __init__(
-        self,
-        dst_size,
-        mode,
-        max_size=2048,
-        multiple=64,
-        dd_name=None,
-        dd_resample=None,
-        thickness=5,
+            self,
+            dst_size,
+            mode,
+            max_size=2048,
+            multiple=64,
+            dd_name=None,
+            dd_resample=None,
+            thickness=5,
     ):
         if dd_name is not None and dd_resample is None:
             for key in ['hdmap']:
@@ -177,21 +177,22 @@ class ImageTransform:
 
 class PositionNetTransform:
     def __init__(
-        self,
-        pos_name=None,
-        max_objs=100,
-        empty_prob=0.0,
-        drop_text_or_image_prob=0.0,
-        random_choice=None,
-        with_cache=False,
-        is_train=False,
+            self,
+            pos_name=None,
+            max_objs=100,
+            empty_prob=0.0,
+            drop_text_or_image_prob=0.0,
+            random_choice=None,
+            with_cache=False,
+            is_train=False,
     ):
         self.pos_name = pos_name
         self.max_objs = max_objs
         self.empty_prob = empty_prob
         self.drop_text_or_image_prob = drop_text_or_image_prob
         self.is_train = is_train
-        self.projection_matrix_path = os.path.join(dm_utils.get_model_dir(), 'dreamer_models/drivedreamer/projection_matrix')
+        self.projection_matrix_path = os.path.join(dm_utils.get_model_dir(),
+                                                   'dreamer_models/drivedreamer/projection_matrix')
         self.projection_matrix = None
         self.box_label_transform = BoxLabelTransform(
             pos_name=pos_name,
@@ -402,12 +403,12 @@ class BoxLabelTransform:
 
 class PromptTransform:
     def __init__(
-        self,
-        prompt_name='sd',
-        prompt_mode='default',
-        default_prompt=None,
-        with_cache=False,
-        is_train=False,
+            self,
+            prompt_name='sd',
+            prompt_mode='default',
+            default_prompt=None,
+            with_cache=False,
+            is_train=False,
     ):
         if prompt_mode == 'default':
             assert default_prompt is not None

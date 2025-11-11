@@ -9,7 +9,8 @@ from diffusers import AutoencoderKL, DDPMScheduler
 from diffusers.optimization import get_scheduler
 from diffusers.utils import WEIGHTS_NAME
 from dreamer_datasets import DefaultCollator, DefaultSampler, load_dataset
-from dreamer_models import DriveDreamerModel, LoRAModel, UNet2DConditionModel, UNet3DConditionModel, UNetSpatioTemporalConditionModel
+from dreamer_models import DriveDreamerModel, LoRAModel, UNet2DConditionModel, UNet3DConditionModel, \
+    UNetSpatioTemporalConditionModel
 
 from dreamer_train import Trainer
 from dreamer_train import utils as dt_utils
@@ -51,7 +52,7 @@ class DriveDreamerTrainer(Trainer):
 
     def get_models(self, model_config):
         pretrained = model_config.pretrained
-        
+
         # VAE config
         vae_pretrained = model_config.get('vae_pretrained', pretrained)
         vae_subfolder = model_config.get('vae_subfolder', 'vae')
@@ -65,7 +66,7 @@ class DriveDreamerTrainer(Trainer):
         )
         self.vae.requires_grad_(False)
         self.vae.to(self.device, dtype=vae_dtype)
-        
+
         # noise_scheduler config
         noise_scheduler_type = model_config.drivedreamer.pop('noise_scheduler_type', 'DDPMScheduler')
         if noise_scheduler_type == 'DDPMScheduler':
@@ -74,7 +75,7 @@ class DriveDreamerTrainer(Trainer):
                 subfolder='scheduler',
                 local_files_only=True,
             )
-            
+
         # Unet config
         self.num_frames = model_config.drivedreamer.pop('num_frames', 1)
         self.num_cams = model_config.drivedreamer.pop('num_cams', 1)
@@ -89,8 +90,8 @@ class DriveDreamerTrainer(Trainer):
             )
             if self.unet_from_2d_to_3d:
                 unet = UNet3DConditionModel.from_unet(
-                    unet, dtype_for_2d=self.dtype, 
-                    dtype_for_3d=torch.float32, 
+                    unet, dtype_for_2d=self.dtype,
+                    dtype_for_3d=torch.float32,
                     tune_all_unet_params=model_config.drivedreamer.pop('tune_all_unet_params', False),
                     num_frames=self.num_frames,
                 )
@@ -108,13 +109,13 @@ class DriveDreamerTrainer(Trainer):
                 revision=None,
                 local_files_only=True,
             )
-            
+
         unet.to(self.device)
         unet.train()
         if not self.unet_from_2d_to_3d:  # already done in UNet3DConditionModel.from_unet, thus skip here
             unet.requires_grad_(False)
             unet.to(dtype=self.dtype)
-        
+
         # DriveDreamer config
         drivedreamer = DriveDreamerModel.from_unet(unet, **model_config.drivedreamer)
         drivedreamer.to_unet(unet)
@@ -126,7 +127,7 @@ class DriveDreamerTrainer(Trainer):
         checkpoint = model_config.get('checkpoint', None)
         self.load_checkpoint(checkpoint, [unet, drivedreamer])
         self.unet = unet
-        
+
         # Model-train config
         self.train_mode = model_config.get('train_mode', 'drivedreamer')  # lora or other
         self.model_name = self.train_mode
@@ -175,7 +176,8 @@ class DriveDreamerTrainer(Trainer):
                 unet = self.model.unet if isinstance(self.model, nn.ModuleDict) else self.model.module.unet
             else:
                 unet = self.unet
-            drivedreamer = self.model.drivedreamer if isinstance(self.model, nn.ModuleDict) else self.model.module.drivedreamer
+            drivedreamer = self.model.drivedreamer if isinstance(self.model,
+                                                                 nn.ModuleDict) else self.model.module.drivedreamer
             grounding_downsampler = functools.partial(drivedreamer, 'grounding_downsampler')
             position_net = functools.partial(drivedreamer, 'position_net')
         elif self.train_mode == 'lora':

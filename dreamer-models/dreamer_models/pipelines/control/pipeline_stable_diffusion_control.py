@@ -70,14 +70,14 @@ class StableDiffusionControlPipeline(
 
     @classmethod
     def from_pretrained(
-        cls,
-        model_path,
-        unet_model_path=None,
-        unet3d_model_path=None,
-        clip_model_path=None,
-        drivedreamer_model_path=None,
-        lora_model_path=None,
-        **kwargs
+            cls,
+            model_path,
+            unet_model_path=None,
+            unet3d_model_path=None,
+            clip_model_path=None,
+            drivedreamer_model_path=None,
+            lora_model_path=None,
+            **kwargs
     ):
         pipe_kwargs = dict()
         if unet_model_path is None:
@@ -90,8 +90,8 @@ class StableDiffusionControlPipeline(
             unet = UNet2DConditionModel.from_pretrained(unet_model_path, **kwargs)
             if unet_from_2d_to_3d:
                 unet = UNet3DConditionModel.from_unet(
-                    unet, dtype_for_2d=torch_dtype, 
-                    dtype_for_3d=torch_dtype, 
+                    unet, dtype_for_2d=torch_dtype,
+                    dtype_for_3d=torch_dtype,
                     num_frames=num_frames,
                     unet3d_model_path=unet3d_model_path,
                 )
@@ -99,7 +99,7 @@ class StableDiffusionControlPipeline(
             unet = UNet3DConditionModel.from_pretrained(unet3d_model_path, **kwargs)
         elif unet_type == 'UNetSpatioTemporalConditionModel':
             unet = UNetSpatioTemporalConditionModel.from_pretrained(unet3d_model_path, **kwargs)
-            
+
         pipe_kwargs['unet'] = unet
         pipe_kwargs['torch_dtype'] = torch_dtype
         pipe_kwargs.update(kwargs)
@@ -115,43 +115,43 @@ class StableDiffusionControlPipeline(
 
     @torch.no_grad()
     def __call__(
-        self,
-        prompt: Union[str, List[str]] = None,
-        height: Optional[int] = None,
-        width: Optional[int] = None,
-        num_inference_steps: int = 50,
-        timesteps: List[int] = None,
-        guidance_scale: float = 7.5,
-        negative_prompt: Optional[Union[str, List[str]]] = None,
-        num_images_per_prompt: Optional[int] = 1,
-        eta: float = 0.0,
-        generator: Optional[Union[torch.Generator, List[torch.Generator]]] = None,
-        latents: Optional[torch.FloatTensor] = None,
-        prompt_embeds: Optional[torch.FloatTensor] = None,
-        negative_prompt_embeds: Optional[torch.FloatTensor] = None,
-        output_type: Optional[str] = 'pil',
-        return_dict: bool = True,
-        cross_attention_kwargs: Optional[Dict[str, Any]] = None,
-        guidance_rescale: float = 0.0,
-        clip_skip: Optional[int] = None,
-        callback_on_step_end: Optional[Callable[[int, int, Dict], None]] = None,
-        callback_on_step_end_tensor_inputs: List[str] = ['latents'],
-        # image
-        image: Optional[PipelineImageInput] = None,
-        strength: float = 0.8,
-        # clip image
-        clip_image: Optional[PipelineImageInput] = None,
-        # drivedreamer
-        drivedreamer_image: Optional[PipelineImageInput] = None,
-        drivedreamer_boxes: Optional[List[List[float]]] = None,
-        drivedreamer_box_texts: Optional[List[str]] = None,
-        drivedreamer_box_images: Optional[List[PIL.Image.Image]] = None,
-        drivedreamer_max_objs: Optional[int] = 30,
-        # video
-        num_frames: Optional[int] = None,
-        video_chunk_size: Optional[int] = None,
-        # others
-        seed: Optional[int] = -1,
+            self,
+            prompt: Union[str, List[str]] = None,
+            height: Optional[int] = None,
+            width: Optional[int] = None,
+            num_inference_steps: int = 50,
+            timesteps: List[int] = None,
+            guidance_scale: float = 7.5,
+            negative_prompt: Optional[Union[str, List[str]]] = None,
+            num_images_per_prompt: Optional[int] = 1,
+            eta: float = 0.0,
+            generator: Optional[Union[torch.Generator, List[torch.Generator]]] = None,
+            latents: Optional[torch.FloatTensor] = None,
+            prompt_embeds: Optional[torch.FloatTensor] = None,
+            negative_prompt_embeds: Optional[torch.FloatTensor] = None,
+            output_type: Optional[str] = 'pil',
+            return_dict: bool = True,
+            cross_attention_kwargs: Optional[Dict[str, Any]] = None,
+            guidance_rescale: float = 0.0,
+            clip_skip: Optional[int] = None,
+            callback_on_step_end: Optional[Callable[[int, int, Dict], None]] = None,
+            callback_on_step_end_tensor_inputs: List[str] = ['latents'],
+            # image
+            image: Optional[PipelineImageInput] = None,
+            strength: float = 0.8,
+            # clip image
+            clip_image: Optional[PipelineImageInput] = None,
+            # drivedreamer
+            drivedreamer_image: Optional[PipelineImageInput] = None,
+            drivedreamer_boxes: Optional[List[List[float]]] = None,
+            drivedreamer_box_texts: Optional[List[str]] = None,
+            drivedreamer_box_images: Optional[List[PIL.Image.Image]] = None,
+            drivedreamer_max_objs: Optional[int] = 30,
+            # video
+            num_frames: Optional[int] = None,
+            video_chunk_size: Optional[int] = None,
+            # others
+            seed: Optional[int] = -1,
     ):
         r"""The call function to the pipeline for generation.
 

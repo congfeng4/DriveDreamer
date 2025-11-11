@@ -14,21 +14,21 @@ from torch import nn
 class CausalVAEModel(ModelMixin, ConfigMixin):
     @register_to_config
     def __init__(
-        self,
-        in_channels=3,
-        out_channels=3,
-        z_channels=4,
-        hidden_size=128,
-        ch_mult=(1, 2, 4, 4),
-        num_res_block=2,
-        attn_resolutions=[],
-        resolution=256,
-        dropout=0.0,
-        time_compress=2,
-        time_downsample_method='avg_pool',
-        time_upsample_method=None,
-        scaling_factor=0.18215,
-        force_upcast=False,
+            self,
+            in_channels=3,
+            out_channels=3,
+            z_channels=4,
+            hidden_size=128,
+            ch_mult=(1, 2, 4, 4),
+            num_res_block=2,
+            attn_resolutions=[],
+            resolution=256,
+            dropout=0.0,
+            time_compress=2,
+            time_downsample_method='avg_pool',
+            time_upsample_method=None,
+            scaling_factor=0.18215,
+            force_upcast=False,
     ):
         super().__init__()
         if isinstance(time_compress, int):
@@ -190,9 +190,9 @@ class CausalVAEModel(ModelMixin, ConfigMixin):
                     tile = x[
                         :,
                         :,
-                        t : t + sample_size_t,
-                        i : i + sample_size_h,
-                        j : j + sample_size_w,
+                        t: t + sample_size_t,
+                        i: i + sample_size_h,
+                        j: j + sample_size_w,
                     ]
                     tile = self.encoder(tile)
                     tile = self.quant_conv(tile)
@@ -268,9 +268,9 @@ class CausalVAEModel(ModelMixin, ConfigMixin):
                     tile = z[
                         :,
                         :,
-                        t : t + latent_size_t,
-                        i : i + latent_size_h,
-                        j : j + latent_size_w,
+                        t: t + latent_size_t,
+                        i: i + latent_size_h,
+                        j: j + latent_size_w,
                     ]
                     tile = self.post_quant_conv(tile)
                     decoded = self.decoder(tile)
@@ -311,7 +311,7 @@ class CausalVAEModel(ModelMixin, ConfigMixin):
         blend_extent = min(a.shape[3], b.shape[3], blend_extent)
         for y in range(blend_extent):
             b[:, :, :, y, :] = a[:, :, :, -blend_extent + y, :] * (1 - y / blend_extent) + b[:, :, :, y, :] * (
-                y / blend_extent
+                    y / blend_extent
             )
         return b
 
@@ -319,7 +319,7 @@ class CausalVAEModel(ModelMixin, ConfigMixin):
         blend_extent = min(a.shape[4], b.shape[4], blend_extent)
         for x in range(blend_extent):
             b[:, :, :, :, x] = a[:, :, :, :, -blend_extent + x] * (1 - x / blend_extent) + b[:, :, :, :, x] * (
-                x / blend_extent
+                    x / blend_extent
             )
         return b
 
@@ -348,18 +348,18 @@ class CausalVAEModel(ModelMixin, ConfigMixin):
 
 class Encoder(nn.Module):
     def __init__(
-        self,
-        in_channels,
-        z_channels,
-        hidden_size,
-        ch_mult,
-        num_res_blocks,
-        time_compress,
-        attn_resolutions=[],
-        resolution=256,
-        dropout=0.0,
-        double_z=True,
-        time_downsample_method='avg_pool',
+            self,
+            in_channels,
+            z_channels,
+            hidden_size,
+            ch_mult,
+            num_res_blocks,
+            time_compress,
+            attn_resolutions=[],
+            resolution=256,
+            dropout=0.0,
+            double_z=True,
+            time_downsample_method='avg_pool',
     ):
         super().__init__()
         self.num_resolutions = len(ch_mult)
@@ -456,17 +456,17 @@ class Encoder(nn.Module):
 
 class Decoder(nn.Module):
     def __init__(
-        self,
-        z_channels,
-        out_channels,
-        hidden_size,
-        ch_mult,
-        num_res_blocks,
-        time_compress,
-        attn_resolutions=[],
-        resolution=256,
-        dropout=0.0,
-        time_upsample_method=None,
+            self,
+            z_channels,
+            out_channels,
+            hidden_size,
+            ch_mult,
+            num_res_blocks,
+            time_compress,
+            attn_resolutions=[],
+            resolution=256,
+            dropout=0.0,
+            time_upsample_method=None,
     ):
         super().__init__()
         self.num_resolutions = len(ch_mult)

@@ -4,7 +4,6 @@ from ..registry import Registry, build_module
 
 SAMPLERS = Registry()
 
-
 SAMPLERS.register_module(DefaultSampler)
 
 

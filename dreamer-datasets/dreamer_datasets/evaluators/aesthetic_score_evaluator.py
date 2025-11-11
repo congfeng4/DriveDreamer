@@ -8,12 +8,12 @@ from transformers import CLIPProcessor, CLIPVisionModelWithProjection
 
 class AestheticScoreEvaluator:
     def __init__(
-        self,
-        clip_model_path,
-        aesthetic_model_path,
-        device=None,
-        dtype=None,
-        local_files_only=True,
+            self,
+            clip_model_path,
+            aesthetic_model_path,
+            device=None,
+            dtype=None,
+            local_files_only=True,
     ):
         self.clip_model_path = clip_model_path
         self.aesthetic_model_path = aesthetic_model_path

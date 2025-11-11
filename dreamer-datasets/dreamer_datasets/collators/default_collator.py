@@ -36,4 +36,3 @@ class DefaultCollator:
         elif isinstance(batch, np.ndarray):
             batch = torch.from_numpy(batch)
         return batch
-    

@@ -10,16 +10,16 @@ from ..structures import boxes3d_utils, boxes_utils
 
 class MAPEvaluator:
     def __init__(
-        self,
-        dataset,
-        label_names,
-        iou_threshs,
-        ignore_thresh=0.5,
-        ignore_mode='ioa',
-        eval_mode='2d',
-        gt_names=None,
-        pred_names=None,
-        overlap_params=None,
+            self,
+            dataset,
+            label_names,
+            iou_threshs,
+            ignore_thresh=0.5,
+            ignore_mode='ioa',
+            eval_mode='2d',
+            gt_names=None,
+            pred_names=None,
+            overlap_params=None,
     ):
         assert eval_mode in ('2d', '3d')
         self.dataset = dataset

@@ -1,4 +1,5 @@
 import os
+
 # ============= PATH ===================
 proj_name = os.path.basename(__file__)[:-3]
 exp_dir = '/mnt/data-2/users/jeff/exp/'  # PATH TO YOUR EXPERIMENT FOLDER
@@ -13,9 +14,9 @@ hdmap_dim = 8  # hidden dim of hdmap feature
 max_objs_num = 100  # max number of objects in one frame
 # ============= Train Parameters =================
 num_machines = 1
-gpu_ids = [0,1,2,3,4,5,6,7]
+gpu_ids = [0, 1, 2, 3, 4, 5, 6, 7]
 distributed_type = None  # DEEPSPEED
-deepspeed_config = None # dict(deepspeed_config_file=os.path.join(os.path.dirname(__file__), '..', '..', 'accelerate_configs/zero2.json'))
+deepspeed_config = None  # dict(deepspeed_config_file=os.path.join(os.path.dirname(__file__), '..', '..', 'accelerate_configs/zero2.json'))
 activation_checkpointing = False
 max_epochs = 20
 batch_size = 4

@@ -25,20 +25,20 @@ def _find_free_port():
 
 class Launcher:
     def __init__(
-        self,
-        gpu_ids,
-        num_machines=None,
-        distributed_type=None,
-        main_process_ip='127.0.0.1',
-        main_process_port=None,
-        num_cpu_threads_per_process=2,
-        nccl_socket_ifname=None,
-        save_config_path=None,
-        save_hostfile_path=None,
-        env=None,
-        executable=None,
-        until_completion=False,
-        **kwargs,
+            self,
+            gpu_ids,
+            num_machines=None,
+            distributed_type=None,
+            main_process_ip='127.0.0.1',
+            main_process_port=None,
+            num_cpu_threads_per_process=2,
+            nccl_socket_ifname=None,
+            save_config_path=None,
+            save_hostfile_path=None,
+            env=None,
+            executable=None,
+            until_completion=False,
+            **kwargs,
     ):
         if num_machines is None:
             if isinstance(main_process_ip, str):

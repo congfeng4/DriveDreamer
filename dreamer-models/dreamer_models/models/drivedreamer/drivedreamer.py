@@ -13,11 +13,11 @@ from .position_net import ImagePositionNet, PositionNet
 class DriveDreamerModel(ModelMixin, ConfigMixin):
     @register_to_config
     def __init__(
-        self,
-        conv_in_cfg=None,
-        grounding_downsampler_cfg=None,
-        position_net_cfg=None,
-        fusers_cfg=None,
+            self,
+            conv_in_cfg=None,
+            grounding_downsampler_cfg=None,
+            position_net_cfg=None,
+            fusers_cfg=None,
     ):
         super().__init__()
         if conv_in_cfg is not None:

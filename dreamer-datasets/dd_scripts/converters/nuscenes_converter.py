@@ -17,8 +17,10 @@ import copy
 
 import sys
 import argparse
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 import ENV
+
 ENV.init_paths()
 from dreamer_datasets import BaseProcessor, Dataset, LmdbWriter, PklWriter, boxes3d_utils, load_dataset
 
@@ -27,34 +29,35 @@ class Options:
     def __init__(self):
         self.parser = argparse.ArgumentParser(description="options for nusc converter")
         self.parser.add_argument('--nusc_version',
-                                help='nuscenes version',
-                                type=str,
-                                default='v1.0-trainval',
-                                choices=['v1.0-trainval', 'v1.0-mini'])
+                                 help='nuscenes version',
+                                 type=str,
+                                 default='v1.0-trainval',
+                                 choices=['v1.0-trainval', 'v1.0-mini'])
         self.parser.add_argument('--data_root',
-                                help='root path of the raw nuscenes data',
-                                type=str,
-                                default='/mnt/pfs/datasets/public_datasets/nuscenes')
+                                 help='root path of the raw nuscenes data',
+                                 type=str,
+                                 default='/mnt/pfs/datasets/public_datasets/nuscenes')
         self.parser.add_argument('--save_root',
-                                help='save path of the processed nuscenes data (in the dreamer format)',
-                                type=str,
-                                default='/mnt/data/dreamer_dataset')
+                                 help='save path of the processed nuscenes data (in the dreamer format)',
+                                 type=str,
+                                 default='/mnt/data/dreamer_dataset')
         self.parser.add_argument('--only_adjust_labels',
-                                help='only adjust labels, do not convert datasets',
-                                action='store_true')
+                                 help='only adjust labels, do not convert datasets',
+                                 action='store_true')
         self.parser.add_argument('--adjust_src_version',
-                                help='source version dataset to be adjuected',
-                                type=str,
-                                default='v0.0.1')
+                                 help='source version dataset to be adjuected',
+                                 type=str,
+                                 default='v0.0.1')
         self.parser.add_argument('--adjust_tar_version',
-                                help='target version dataset after ajected',
-                                type=str,
-                                default='v0.0.2')
+                                 help='target version dataset after ajected',
+                                 type=str,
+                                 default='v0.0.2')
         self.parser.add_argument('--mode',
-                                help='covert mode, cam_all is 12Hz camera data, cam is 2Hz keyframe data, lidar is raw lidar data. For DriveDraemer 12Hz videos, cam_all is enough',
-                                type=str,
-                                nargs='+',
-                                default=['cam_all'])
+                                 help='covert mode, cam_all is 12Hz camera data, cam is 2Hz keyframe data, lidar is raw lidar data. For DriveDraemer 12Hz videos, cam_all is enough',
+                                 type=str,
+                                 nargs='+',
+                                 default=['cam_all'])
+
     def parse(self):
         self.options = self.parser.parse_args()
         return self.options
@@ -686,7 +689,6 @@ class NuScenesConverter:
                         cam_idx += 1
             data_idxes.append(data_idx)
 
-
         data_idxes2 = []
         for trainval_idx, scene_tokens in enumerate([train_scenes_token, val_scenes_token]):
             total_idx = 0
@@ -714,12 +716,13 @@ class NuScenesConverter:
                                 for add_ in range(-2, 3, 1):
                                     this_add = add_ + frame_idx
                                     if this_add in data_idxes[trainval_idx][scene_token][cam_name_].keys():
-                                        this_cam_token_ = data_idxes[trainval_idx][scene_token][cam_name_][this_add]['token']
+                                        this_cam_token_ = data_idxes[trainval_idx][scene_token][cam_name_][this_add][
+                                            'token']
                                         this_cam_time_stamp = self.nusc.get('sample_data', this_cam_token_)['timestamp']
                                         if abs(this_cam_time_stamp - cam_front_time_stamp) < this_time_diff:
                                             this_time_diff = abs(this_cam_time_stamp - cam_front_time_stamp)
                                             this_data_idx2_dict['multiview_start_idx'][cam_name_] = \
-                                            data_idxes[trainval_idx][scene_token][cam_name_][this_add]['idx']
+                                                data_idxes[trainval_idx][scene_token][cam_name_][this_add]['idx']
 
                         data_idx2.append(this_data_idx2_dict)
                         cam_record = self.nusc.get('sample_data', this_cam_token)
@@ -732,7 +735,6 @@ class NuScenesConverter:
                         data_idx2[video_len_idx]['video_length'] = len(video_length_idxes)
             data_idxes2.append(data_idx2)
         return data_idxes2
-
 
 
 class NuScenesProcessor(BaseProcessor):
@@ -805,6 +807,7 @@ class NuScenesProcessor(BaseProcessor):
         self.writer.write_config()
         self.writer.close()
 
+
 def transform_matrix(rotation, translation, inverse=False):
     tm = np.eye(4, dtype='float32')
     if inverse:
@@ -875,7 +878,7 @@ def get_map_geom(patch_box, patch_angle, layer_names, nusc_map, map_explorer):
 
 def get_ped_crossing_line(patch_box, patch_angle, nusc_map, map_explorer):
     def add_line(poly_xy, idx, patch, patch_angle, patch_x, patch_y, line_list):
-        points = [(p0, p1) for p0, p1 in zip(poly_xy[0, idx : idx + 2], poly_xy[1, idx : idx + 2])]
+        points = [(p0, p1) for p0, p1 in zip(poly_xy[0, idx: idx + 2], poly_xy[1, idx: idx + 2])]
         line = LineString(points)
         line = line.intersection(patch)
         if not line.is_empty:
@@ -1075,7 +1078,8 @@ def main():
     # data_dir = opt.os.path.join(opt.data_root, nusc_version)
     save_root = opt.save_root
     save_path = os.path.join(save_root, nusc_version)
-    nusc_convertor = NuScenesConverter(data_dir=opt.data_root, version=nusc_version, save_path=save_path, save_version='v0.0.1')
+    nusc_convertor = NuScenesConverter(data_dir=opt.data_root, version=nusc_version, save_path=save_path,
+                                       save_version='v0.0.1')
 
     # STEP1: convert nuscenes data to dreamer dataset, this may take one day
     if not opt.only_adjust_labels:
@@ -1099,7 +1103,6 @@ def main():
                 continue
             os.symlink(os.path.join(data_path, src_version, subfile), os.path.join(data_path, tar_version, subfile))
 
+
 if __name__ == '__main__':
     main()
-
-

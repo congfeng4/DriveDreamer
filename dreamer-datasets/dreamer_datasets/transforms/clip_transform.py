@@ -2,6 +2,7 @@ import torch
 from transformers import CLIPModel, CLIPProcessor, CLIPTextModel, CLIPTextModelWithProjection, CLIPTokenizer
 from dreamer_models import utils as dm_utils
 
+
 class CLIPTransform:
     def __init__(self, model_path, device=None, dtype=None):
         if dtype is None:

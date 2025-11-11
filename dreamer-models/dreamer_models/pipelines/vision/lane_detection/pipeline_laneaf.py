@@ -216,26 +216,26 @@ def postprocess(output, image_shape, scale):
     y_type_process(valid_pts, filter_single_lanes)
     parsed_lanes = filter_single_lanes + road_parsed_lanes + parsed_stop_lanes + diamond_parsed_lanes
     parsed_double_ids = (
-        lane_double_ids
-        + [-1 for _ in range(len(road_parsed_lanes))]
-        + [-1 for _ in range(len(parsed_stop_lanes))]
-        + [-1 for _ in range(len(diamond_parsed_lanes))]
+            lane_double_ids
+            + [-1 for _ in range(len(road_parsed_lanes))]
+            + [-1 for _ in range(len(parsed_stop_lanes))]
+            + [-1 for _ in range(len(diamond_parsed_lanes))]
     )
     return get_results(parsed_lanes, parsed_double_ids, valid_pts, image_shape, scale)
 
 
 def check_y_pair(
-    interp_lane0,
-    interp_lane1,
-    intersect_pt,
-    lane_dist0,
-    lane_dist1,
-    longer_lane_thresh_min_thresh=20,
-    longer_lane_thresh_max_thresh=30,
-    longer_lane_thresh_min_x_thresh=30,
-    longer_lane_thresh_max_x_thresh=90,
-    start_y=576,
-    end_y=1080,
+        interp_lane0,
+        interp_lane1,
+        intersect_pt,
+        lane_dist0,
+        lane_dist1,
+        longer_lane_thresh_min_thresh=20,
+        longer_lane_thresh_max_thresh=30,
+        longer_lane_thresh_min_x_thresh=30,
+        longer_lane_thresh_max_x_thresh=90,
+        start_y=576,
+        end_y=1080,
 ):  # end_y:30fov=1080 120fov=840
     start_ratio = 0.1
     end_ratio = 0.9
@@ -264,10 +264,10 @@ def check_y_pair(
         return False
     else:
         dynamic_thresh = (intersect_y - start_y) / (end_y - start_y) * (
-            longer_lane_thresh_max_thresh - longer_lane_thresh_min_thresh
+                longer_lane_thresh_max_thresh - longer_lane_thresh_min_thresh
         ) + longer_lane_thresh_min_thresh
         dynamic_x_thresh = (intersect_y - start_y) / (end_y - start_y) * (
-            longer_lane_thresh_max_x_thresh - longer_lane_thresh_min_thresh
+                longer_lane_thresh_max_x_thresh - longer_lane_thresh_min_thresh
         ) + longer_lane_thresh_min_x_thresh
         # check the longer lane the distance is miner than a thresh
         if lane1_match_cnt == 0:
@@ -445,7 +445,7 @@ def y_type_process(parsed_det_area, input_lanes_data):
 
     def dyn_thresh_with_y(input_y):
         dyn_len_thresh = (input_y - start_y) / (end_y - start_y) * (
-            first_lane_pt_match_distance_thresh_up - first_lane_pt_match_distance_thresh_down
+                first_lane_pt_match_distance_thresh_up - first_lane_pt_match_distance_thresh_down
         ) + first_lane_pt_match_distance_thresh_down
         return dyn_len_thresh
 
@@ -468,7 +468,7 @@ def y_type_process(parsed_det_area, input_lanes_data):
             minest_dist = cdist_map[0, argmin_idx]
             corr_y = pt[1]
             if minest_dist < dyn_thresh_with_y(corr_y) and not (
-                0.1 <= argmin_idx / cdist_map.shape[1] <= 0.9
+                    0.1 <= argmin_idx / cdist_map.shape[1] <= 0.9
             ):  # 动态thresh according y coord
                 y_start = min(interp_lane[0, 1], interp_lane[-1, 1])
                 y_end = max(interp_lane[0, 1], interp_lane[-1, 1])
@@ -484,18 +484,18 @@ def y_type_process(parsed_det_area, input_lanes_data):
             pt_2_lane_dises.append(minest_dist)
         argsorted_idxes = np.argsort(pt_2_lane_dises)
         if (
-            len(argsorted_idxes) >= 2
-            and pt_2_lane_dises[argsorted_idxes[0]] < distance_thresh
-            and pt_2_lane_dises[argsorted_idxes[1]] < distance_thresh
-            and argsorted_idxes[0] not in merge_lane_idxes
-            and argsorted_idxes[1] not in merge_lane_idxes
-            and check_y_pair(
-                filter_interp_lanes[argsorted_idxes[0]],
-                filter_interp_lanes[argsorted_idxes[1]],
-                parsed_det_area[pt_idx],
-                pt_2_lane_dises[argsorted_idxes[0]],
-                pt_2_lane_dises[argsorted_idxes[1]],
-            )
+                len(argsorted_idxes) >= 2
+                and pt_2_lane_dises[argsorted_idxes[0]] < distance_thresh
+                and pt_2_lane_dises[argsorted_idxes[1]] < distance_thresh
+                and argsorted_idxes[0] not in merge_lane_idxes
+                and argsorted_idxes[1] not in merge_lane_idxes
+                and check_y_pair(
+            filter_interp_lanes[argsorted_idxes[0]],
+            filter_interp_lanes[argsorted_idxes[1]],
+            parsed_det_area[pt_idx],
+            pt_2_lane_dises[argsorted_idxes[0]],
+            pt_2_lane_dises[argsorted_idxes[1]],
+        )
         ):
             merge_lane_idxes.add(argsorted_idxes[0])
             merge_lane_idxes.add(argsorted_idxes[1])
@@ -932,13 +932,13 @@ def check_valid(min_y, lane_length, lane_dis):
 
 
 def adjust_lanes(
-    export_lanes, samp_factor_x, samp_factor_y, crop_offset, feat_height, feat_width, lanetype_mat, lanecolor_mat
+        export_lanes, samp_factor_x, samp_factor_y, crop_offset, feat_height, feat_width, lanetype_mat, lanecolor_mat
 ):
     results = []
     for lane in export_lanes:
         lane = np.asarray(lane)
         if not check_valid(
-            np.min(lane[:, 1]), len(lane), np.linalg.norm([lane[0][0] - lane[-1][0], lane[0][1] - lane[-1][1]])
+                np.min(lane[:, 1]), len(lane), np.linalg.norm([lane[0][0] - lane[-1][0], lane[0][1] - lane[-1][1]])
         ):
             continue
         islane_list = []
@@ -1006,10 +1006,10 @@ def last_point_fixed(lane, front_start_idx=5, front_end_idx=9, back_start_idx=-6
         return lane
     # start_pts
     front_delta_x = (lane.coords[front_end_idx][0] - lane.coords[front_start_idx][0]) / (
-        front_end_idx - front_start_idx
+            front_end_idx - front_start_idx
     )
     front_delta_y = (lane.coords[front_end_idx][1] - lane.coords[front_start_idx][1]) / (
-        front_end_idx - front_start_idx
+            front_end_idx - front_start_idx
     )
     # end_pts
     back_delta_x = (lane.coords[back_start_idx][0] - lane.coords[back_end_idx][0]) / (back_start_idx - back_end_idx)
@@ -1218,15 +1218,15 @@ def decodePoses_bias(BW, VAF, HAF, hbias, vbias, fg_thresh, err_thresh=5, config
                     lane2_center_y1 = lane2.center_y[-1]
                     merge_lane = False
                     if (
-                        lane1_y_max > lane2_y_max
-                        and abs(lane1_center_x1 - lane2_center_x0) < 20
-                        and abs(lane1_center_y1 - lane2_center_y0) < 10
+                            lane1_y_max > lane2_y_max
+                            and abs(lane1_center_x1 - lane2_center_x0) < 20
+                            and abs(lane1_center_y1 - lane2_center_y0) < 10
                     ):
                         merge_lane = True
                     if (
-                        lane1_y_max < lane2_y_max
-                        and abs(lane1_center_x0 - lane2_center_x1) < 20
-                        and abs(lane1_center_y0 - lane2_center_y1) < 10
+                            lane1_y_max < lane2_y_max
+                            and abs(lane1_center_x0 - lane2_center_x1) < 20
+                            and abs(lane1_center_y0 - lane2_center_y1) < 10
                     ):
                         merge_lane = True
                     if merge_lane and cosangle > 90 and vec2_len > 9:

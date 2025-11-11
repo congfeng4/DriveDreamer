@@ -26,7 +26,7 @@ class EDMLoss(nn.Module):
         else:
             assert False
         sigma_r = sigma[:, None, None, None].repeat_interleave(num_frames, dim=0)
-        c_in = 1 / (sigma_r**2 + self.sigma_data**2).sqrt()
+        c_in = 1 / (sigma_r ** 2 + self.sigma_data ** 2).sqrt()
         noise = torch.randn_like(latents)
         noisy_latents = latents + noise * sigma_r
         inp_noisy_latents = noisy_latents * c_in
@@ -38,11 +38,11 @@ class EDMLoss(nn.Module):
         return inp_noisy_latents, timesteps
 
     def forward(self, pred_latents):
-        c_skip = self.sigma_data**2 / (self.sigma**2 + self.sigma_data**2)
-        c_out = self.sigma * self.sigma_data / (self.sigma**2 + self.sigma_data**2).sqrt()
+        c_skip = self.sigma_data ** 2 / (self.sigma ** 2 + self.sigma_data ** 2)
+        c_out = self.sigma * self.sigma_data / (self.sigma ** 2 + self.sigma_data ** 2).sqrt()
         pred_latents = pred_latents.reshape((self.sigma.shape[0], -1))
         denoised_latents = c_skip * self.noisy_latents + c_out * pred_latents
-        weight = (self.sigma**2 + self.sigma_data**2) / (self.sigma * self.sigma_data) ** 2
+        weight = (self.sigma ** 2 + self.sigma_data ** 2) / (self.sigma * self.sigma_data) ** 2
         loss = weight * (denoised_latents - self.latents) ** 2
         loss = torch.mean(loss, dim=1)
         return loss
@@ -62,15 +62,15 @@ def stratified_uniform(shape, group=0, groups=1, dtype=None, device=None):
 
 
 def rand_cosine_interpolated(
-    shape,
-    image_d=64,
-    noise_d_low=32,
-    noise_d_high=64,
-    sigma_data=0.5,
-    min_value=0.002,
-    max_value=700,
-    device='cpu',
-    dtype=torch.float32,
+        shape,
+        image_d=64,
+        noise_d_low=32,
+        noise_d_high=64,
+        sigma_data=0.5,
+        min_value=0.002,
+        max_value=700,
+        device='cpu',
+        dtype=torch.float32,
 ):
     """Draws samples from an interpolated cosine timestep distribution (from
     simple diffusion)."""

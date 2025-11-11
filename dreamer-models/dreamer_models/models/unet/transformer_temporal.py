@@ -45,22 +45,22 @@ class TransformerTemporalModel(ModelMixin, ConfigMixin):
 
     @register_to_config
     def __init__(
-        self,
-        num_attention_heads: int = 16,
-        attention_head_dim: int = 88,
-        in_channels: Optional[int] = None,
-        out_channels: Optional[int] = None,
-        num_layers: int = 1,
-        dropout: float = 0.0,
-        norm_num_groups: int = 32,
-        cross_attention_dim: Optional[int] = None,
-        attention_bias: bool = False,
-        sample_size: Optional[int] = None,
-        activation_fn: str = 'geglu',
-        norm_elementwise_affine: bool = True,
-        double_self_attention: bool = True,
-        positional_embeddings: Optional[str] = None,
-        num_positional_embeddings: Optional[int] = None,
+            self,
+            num_attention_heads: int = 16,
+            attention_head_dim: int = 88,
+            in_channels: Optional[int] = None,
+            out_channels: Optional[int] = None,
+            num_layers: int = 1,
+            dropout: float = 0.0,
+            norm_num_groups: int = 32,
+            cross_attention_dim: Optional[int] = None,
+            attention_bias: bool = False,
+            sample_size: Optional[int] = None,
+            activation_fn: str = 'geglu',
+            norm_elementwise_affine: bool = True,
+            double_self_attention: bool = True,
+            positional_embeddings: Optional[str] = None,
+            num_positional_embeddings: Optional[int] = None,
     ):
         super().__init__()
         self.num_attention_heads = num_attention_heads
@@ -96,14 +96,14 @@ class TransformerTemporalModel(ModelMixin, ConfigMixin):
         self.gradient_checkpointing = False
 
     def forward(
-        self,
-        hidden_states: torch.FloatTensor,
-        encoder_hidden_states: Optional[torch.LongTensor] = None,
-        timestep: Optional[torch.LongTensor] = None,
-        class_labels: torch.LongTensor = None,
-        num_frames: int = 1,
-        cross_attention_kwargs: Optional[Dict[str, Any]] = None,
-        return_dict: bool = True,
+            self,
+            hidden_states: torch.FloatTensor,
+            encoder_hidden_states: Optional[torch.LongTensor] = None,
+            timestep: Optional[torch.LongTensor] = None,
+            class_labels: torch.LongTensor = None,
+            num_frames: int = 1,
+            cross_attention_kwargs: Optional[Dict[str, Any]] = None,
+            return_dict: bool = True,
     ) -> TransformerTemporalModelOutput:
         """
         The [`TransformerTemporal`] forward method.
@@ -203,13 +203,13 @@ class TransformerSpatioTemporalModel(nn.Module):
     """
 
     def __init__(
-        self,
-        num_attention_heads: int = 16,
-        attention_head_dim: int = 88,
-        in_channels: int = 320,
-        out_channels: Optional[int] = None,
-        num_layers: int = 1,
-        cross_attention_dim: Optional[int] = None,
+            self,
+            num_attention_heads: int = 16,
+            attention_head_dim: int = 88,
+            in_channels: int = 320,
+            out_channels: Optional[int] = None,
+            num_layers: int = 1,
+            cross_attention_dim: Optional[int] = None,
     ):
         super().__init__()
         self.num_attention_heads = num_attention_heads
@@ -279,11 +279,11 @@ class TransformerSpatioTemporalModel(nn.Module):
         _init_time_conv(self.time_conv)
 
     def forward(
-        self,
-        hidden_states: torch.Tensor,
-        encoder_hidden_states: Optional[torch.Tensor] = None,
-        image_only_indicator: Optional[torch.Tensor] = None,
-        return_dict: bool = True,
+            self,
+            hidden_states: torch.Tensor,
+            encoder_hidden_states: Optional[torch.Tensor] = None,
+            image_only_indicator: Optional[torch.Tensor] = None,
+            return_dict: bool = True,
     ):
         """
         Args:
@@ -394,13 +394,13 @@ class TransformerSpatioTemporalModel(nn.Module):
 
 class TrainableTemporalTimesteps(torch.nn.Module):
     def __init__(
-        self,
-        max_id: int,
-        repeat_length: int,
-        num_channels: int,
-        flip_sin_to_cos: bool,
-        downscale_freq_shift: float,
-        num_frames: int,
+            self,
+            max_id: int,
+            repeat_length: int,
+            num_channels: int,
+            flip_sin_to_cos: bool,
+            downscale_freq_shift: float,
+            num_frames: int,
     ):
         super().__init__()
         timesteps = PositionalID(max_id, repeat_length)(num_frames)

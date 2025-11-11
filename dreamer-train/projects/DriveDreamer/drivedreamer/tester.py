@@ -50,7 +50,7 @@ class DriveDreamerTester(Tester):
         variant = 'fp16' if self.mixed_precision == 'fp16' else None
         self.num_frames = model_config.drivedreamer.get('num_frames', 1)
         self.is_video = self.num_frames > 1
-        
+
         train_mode = model_config.get('train_mode', 'drivedreamer')
         weight_path = model_config.get('weight_path', None)
         with_ema = model_config.get('with_ema', False)
@@ -60,12 +60,13 @@ class DriveDreamerTester(Tester):
             unet3d_model_path = os.path.join(self.get_checkpoint(weight_path), 'unet' + ema_or_not)
             lora_model_path = None
         elif train_mode == 'lora':
-            drivedreamer_model_path = os.path.join(self.get_checkpoint(model_config.checkpoint), 'drivedreamer' + ema_or_not)
+            drivedreamer_model_path = os.path.join(self.get_checkpoint(model_config.checkpoint),
+                                                   'drivedreamer' + ema_or_not)
             unet3d_model_path = os.path.join(self.get_checkpoint(model_config.checkpoint), 'unet' + ema_or_not)
             lora_model_path = os.path.join(self.get_checkpoint(weight_path), 'lora' + ema_or_not)
         else:
             assert False
-            
+
         if pipeline_name == 'StableDiffusionControlPipeline':
             model = StableDiffusionControlPipeline.from_pretrained(
                 dm_utils.get_model_path(model_config.pretrained),
@@ -199,7 +200,7 @@ def save_images(output_images, batch_dict, idx, save_dir=None, each=True, show_h
             video_frames.append(cat_image)
         imageio.mimwrite(os.path.join(save_dir, '{:06d}.mp4'.format(idx)), video_frames, fps=12)
         return idx + 1
-        
+
     else:
         if each:
             for i in range(len(output_images)):

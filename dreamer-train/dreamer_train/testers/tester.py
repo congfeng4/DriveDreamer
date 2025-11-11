@@ -14,12 +14,12 @@ from ..transforms import build_transform
 
 class Tester:
     def __init__(
-        self,
-        project_dir,
-        mixed_precision=None,
-        log_interval=100,
-        seed=6666,
-        **kwargs,
+            self,
+            project_dir,
+            mixed_precision=None,
+            log_interval=100,
+            seed=6666,
+            **kwargs,
     ):
         assert seed > 0
         set_seed(seed)

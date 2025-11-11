@@ -123,7 +123,7 @@ class ImageVisualizer:
             image_height = (rows + 1) * char_height
             image = np.zeros((image_height, self.width, 3), dtype='uint8')
             for i in range(rows):
-                text_i = text[i * cols : (i + 1) * cols]
+                text_i = text[i * cols: (i + 1) * cols]
                 cv2.putText(
                     image,
                     text=text_i,
@@ -202,15 +202,15 @@ class ImageVisualizer:
             cv2.polylines(self.image, [poly_box], isClosed=True, color=color_i, thickness=thickness)
 
     def draw_corners(
-        self,
-        corners,
-        classes=None,
-        color=None,
-        thickness=2,
-        ori_color=None,
-        show_ori=False,
-        bottom_indexes=None,
-        show_num=False,
+            self,
+            corners,
+            classes=None,
+            color=None,
+            thickness=2,
+            ori_color=None,
+            show_ori=False,
+            bottom_indexes=None,
+            show_num=False,
     ):
         # corners: (num_boxes, 8, 2)
         if len(corners) == 0:
@@ -320,14 +320,14 @@ class ImageVisualizer:
                 cv2.circle(self.image, (x, y), color=color_j, radius=radius, thickness=thickness)
 
     def draw_keypoints(
-        self,
-        keypoints,
-        color=(0, 255, 255),
-        radius=2,
-        thickness=2,
-        skeleton=None,
-        skeleton_color=None,
-        show_num=False,
+            self,
+            keypoints,
+            color=(0, 255, 255),
+            radius=2,
+            thickness=2,
+            skeleton=None,
+            skeleton_color=None,
+            show_num=False,
     ):
         # keypoints: (num_boxes, num_kps, 3)
         if len(keypoints) == 0:

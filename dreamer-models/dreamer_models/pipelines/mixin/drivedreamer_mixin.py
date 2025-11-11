@@ -35,18 +35,18 @@ class DriveDreamerMixin:
                     module.enabled = enabled
 
     def forward_DriveDreamer(
-        self,
-        height,
-        width,
-        batch_size=1,
-        num_images_per_prompt=1,
-        num_frames=None,
-        image=None,
-        boxes=None,
-        box_texts=None,
-        box_images=None,
-        max_objs=30,
-        generator=None,
+            self,
+            height,
+            width,
+            batch_size=1,
+            num_images_per_prompt=1,
+            num_frames=None,
+            image=None,
+            boxes=None,
+            box_texts=None,
+            box_images=None,
+            max_objs=30,
+            generator=None,
     ):
         if image is not None:
             image = self.image_processor.preprocess(image, height=height, width=width)
@@ -76,15 +76,17 @@ class DriveDreamerMixin:
                 box_texts = boxes_text_maybe_video[video_idx]
                 if box_images_maybe_video is not None:
                     box_images = box_images_maybe_video[video_idx]
-            
+
                 feature_type = self.DriveDreamer.position_net.feature_type
                 n_objs = min(len(box_texts), max_objs)
                 boxes = boxes[:n_objs]
                 input_boxes = torch.zeros((max_objs, boxes.shape[1]), device=self.device)
                 input_masks = torch.zeros((max_objs,), device=self.device)
-                text_embeddings = torch.zeros((max_objs, self.DriveDreamer_clip_model.text_embed_dim), device=self.device)
+                text_embeddings = torch.zeros((max_objs, self.DriveDreamer_clip_model.text_embed_dim),
+                                              device=self.device)
                 text_masks = torch.zeros((max_objs,), device=self.device)
-                image_embeddings = torch.zeros((max_objs, self.DriveDreamer_clip_model.projection_dim), device=self.device)
+                image_embeddings = torch.zeros((max_objs, self.DriveDreamer_clip_model.projection_dim),
+                                               device=self.device)
                 image_masks = torch.zeros((max_objs,), device=self.device)
                 if n_objs > 0:
                     boxes = torch.tensor(boxes, device=self.device)
@@ -168,4 +170,3 @@ class DriveDreamerMixin:
             objs=objs,
         )
         return outputs
-

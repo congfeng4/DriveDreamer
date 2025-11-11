@@ -65,14 +65,14 @@ class PositionNet(nn.Module):
             assert False
 
     def forward(
-        self,
-        boxes,
-        masks,
-        positive_embeddings=None,
-        text_embeddings=None,
-        text_masks=None,
-        image_embeddings=None,
-        image_masks=None,
+            self,
+            boxes,
+            masks,
+            positive_embeddings=None,
+            text_embeddings=None,
+            text_masks=None,
+            image_embeddings=None,
+            image_masks=None,
     ):
         masks = masks.unsqueeze(-1)
         xyxy_embedding = get_fourier_embeds_from_boundingbox(self.fourier_embedder_dim, boxes)

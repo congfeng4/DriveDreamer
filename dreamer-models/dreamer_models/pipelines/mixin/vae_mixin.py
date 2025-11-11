@@ -29,18 +29,18 @@ class VaeMixin:
         self.vae = vae
 
     def encode_vae_image(
-        self,
-        image,
-        height,
-        width,
-        batch_size=1,
-        num_images_per_prompt=1,
-        num_frames=None,
-        do_classifier_free_guidance=False,
-        sample_mode='sample',
-        add_noise=True,
-        timestep=None,
-        generator=None,
+            self,
+            image,
+            height,
+            width,
+            batch_size=1,
+            num_images_per_prompt=1,
+            num_frames=None,
+            do_classifier_free_guidance=False,
+            sample_mode='sample',
+            add_noise=True,
+            timestep=None,
+            generator=None,
     ):
         if image is None:
             return None

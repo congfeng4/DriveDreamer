@@ -34,12 +34,12 @@ class PromptMixin:
         add_control_model_name('text_encoder')
 
     def encode_prompt(
-        self,
-        prompt,
-        negative_prompt=None,
-        batch_size=1,
-        num_images_per_prompt=1,
-        num_frames=None,
+            self,
+            prompt,
+            negative_prompt=None,
+            batch_size=1,
+            num_images_per_prompt=1,
+            num_frames=None,
     ):
         device = self._execution_device
         text_inputs = self.tokenizer(

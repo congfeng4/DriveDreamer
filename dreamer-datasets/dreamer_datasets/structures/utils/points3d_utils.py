@@ -267,12 +267,12 @@ def calc_square_dist(point_feat_a, point_feat_b, norm=True):
 def points3d_in_range(points3d, point_range):
     # points3d: (N, 3)
     in_range_flags = (
-        (points3d[:, 0] > point_range[0])
-        & (points3d[:, 1] > point_range[1])
-        & (points3d[:, 2] > point_range[2])
-        & (points3d[:, 0] < point_range[3])
-        & (points3d[:, 1] < point_range[4])
-        & (points3d[:, 2] < point_range[5])
+            (points3d[:, 0] > point_range[0])
+            & (points3d[:, 1] > point_range[1])
+            & (points3d[:, 2] > point_range[2])
+            & (points3d[:, 0] < point_range[3])
+            & (points3d[:, 1] < point_range[4])
+            & (points3d[:, 2] < point_range[5])
     )
     return in_range_flags
 
@@ -280,10 +280,10 @@ def points3d_in_range(points3d, point_range):
 def points3d_in_range_bev(points3d, point_range, bev_axis):
     # points3d: (N, 3)
     in_range_flags = (
-        (points3d[:, bev_axis[0]] > point_range[bev_axis[0]])
-        & (points3d[:, bev_axis[1]] > point_range[bev_axis[1]])
-        & (points3d[:, bev_axis[0]] < point_range[bev_axis[0] + 3])
-        & (points3d[:, bev_axis[1]] < point_range[bev_axis[1] + 3])
+            (points3d[:, bev_axis[0]] > point_range[bev_axis[0]])
+            & (points3d[:, bev_axis[1]] > point_range[bev_axis[1]])
+            & (points3d[:, bev_axis[0]] < point_range[bev_axis[0] + 3])
+            & (points3d[:, bev_axis[1]] < point_range[bev_axis[1] + 3])
     )
     return in_range_flags
 

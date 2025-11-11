@@ -20,12 +20,12 @@ class TemporalBasicTransformerBlock(nn.Module):
     """
 
     def __init__(
-        self,
-        dim: int,
-        time_mix_inner_dim: int,
-        num_attention_heads: int,
-        attention_head_dim: int,
-        cross_attention_dim: Optional[int] = None,
+            self,
+            dim: int,
+            time_mix_inner_dim: int,
+            num_attention_heads: int,
+            attention_head_dim: int,
+            cross_attention_dim: Optional[int] = None,
     ):
         super().__init__()
         self.is_res = dim == time_mix_inner_dim
@@ -81,10 +81,10 @@ class TemporalBasicTransformerBlock(nn.Module):
         self._chunk_dim = 1
 
     def forward(
-        self,
-        hidden_states: torch.FloatTensor,
-        num_frames: int,
-        encoder_hidden_states: Optional[torch.FloatTensor] = None,
+            self,
+            hidden_states: torch.FloatTensor,
+            num_frames: int,
+            encoder_hidden_states: Optional[torch.FloatTensor] = None,
     ) -> torch.FloatTensor:
         # Notice that normalization is always applied before the real computation in the following blocks.
         # 0. Self-Attention

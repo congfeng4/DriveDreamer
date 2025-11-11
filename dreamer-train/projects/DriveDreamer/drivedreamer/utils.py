@@ -6,7 +6,6 @@ box_label_table = {
     'tri_reflector': 'roadside_warning_triangle',
 }
 
-
 box_label_fix_keys = ['vehicle', 'non_vehicle']
 
 box_label_probs = {}

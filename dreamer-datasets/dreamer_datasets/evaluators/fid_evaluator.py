@@ -84,7 +84,7 @@ def get_activations(data_list, model, batch_size, device, dims, num_workers):
 
         pred = pred.squeeze(3).squeeze(2).cpu().numpy()
 
-        pred_arr[start_idx : start_idx + pred.shape[0]] = pred
+        pred_arr[start_idx: start_idx + pred.shape[0]] = pred
 
         start_idx = start_idx + pred.shape[0]
 

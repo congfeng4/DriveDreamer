@@ -27,7 +27,7 @@ class ClipMixin:
             t_start = max(num_inference_steps - init_timestep, 0)
         else:
             t_start = 0
-        timesteps = self.scheduler.timesteps[t_start * self.scheduler.order :]
+        timesteps = self.scheduler.timesteps[t_start * self.scheduler.order:]
         # Strength is irrelevant if we directly request a timestep to start at;
         # that is, strength is determined by the denoising_start instead.
         if denoising_start is not None:
@@ -52,12 +52,12 @@ class ClipMixin:
         return timesteps, num_inference_steps - t_start
 
     def encode_clip_image(
-        self,
-        image,
-        batch_size=1,
-        num_images_per_prompt=1,
-        num_frames=None,
-        do_classifier_free_guidance=False,
+            self,
+            image,
+            batch_size=1,
+            num_images_per_prompt=1,
+            num_frames=None,
+            do_classifier_free_guidance=False,
     ):
         if image is None:
             return None

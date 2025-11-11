@@ -13,7 +13,8 @@ from diffusers.models.attention_processor import (
     AttnProcessor,
     IPAdapterAttnProcessor2_0,
 )
-from diffusers.models.embeddings import PixArtAlphaTextProjection, TimestepEmbedding, Timesteps, GLIGENTextBoundingboxProjection
+from diffusers.models.embeddings import PixArtAlphaTextProjection, TimestepEmbedding, Timesteps, \
+    GLIGENTextBoundingboxProjection
 from diffusers.models.modeling_utils import ModelMixin
 from diffusers.models.unets.unet_3d_blocks import UNetMidBlockSpatioTemporal, get_down_block, get_up_block
 from diffusers.utils import BaseOutput, logging, WEIGHTS_NAME
@@ -77,37 +78,37 @@ class UNetSpatioTemporalConditionModel(ModelMixin, ConfigMixin, UNet2DConditionL
 
     @register_to_config
     def __init__(
-        self,
-        sample_size: Optional[int] = None,
-        in_channels: int = 8,
-        out_channels: int = 4,
-        patch_size: int = 1,
-        down_block_types: Tuple[str] = (
-            'CrossAttnDownBlockSpatioTemporal',
-            'CrossAttnDownBlockSpatioTemporal',
-            'CrossAttnDownBlockSpatioTemporal',
-            'DownBlockSpatioTemporal',
-        ),
-        up_block_types: Tuple[str] = (
-            'UpBlockSpatioTemporal',
-            'CrossAttnUpBlockSpatioTemporal',
-            'CrossAttnUpBlockSpatioTemporal',
-            'CrossAttnUpBlockSpatioTemporal',
-        ),
-        block_out_channels: Tuple[int] = (320, 640, 1280, 1280),
-        addition_time_embed_dim: int = 256,
-        projection_class_embeddings_input_dim: int = 768,
-        layers_per_block: Union[int, Tuple[int]] = 2,
-        cross_attention_dim: Union[int, Tuple[int]] = 1024,
-        transformer_layers_per_block: Union[int, Tuple[int], Tuple[Tuple]] = 1,
-        num_attention_heads: Union[int, Tuple[int]] = (5, 10, 10, 20),
-        num_frames: int = 25,
-        caption_channels: int = None,
-        extra_caption: bool = False,
-        num_tokens: int = 1,
-        exvideo_cfg: dict = None,
-        attention_type: str = 'default',
-        add_emb: bool = False,
+            self,
+            sample_size: Optional[int] = None,
+            in_channels: int = 8,
+            out_channels: int = 4,
+            patch_size: int = 1,
+            down_block_types: Tuple[str] = (
+                    'CrossAttnDownBlockSpatioTemporal',
+                    'CrossAttnDownBlockSpatioTemporal',
+                    'CrossAttnDownBlockSpatioTemporal',
+                    'DownBlockSpatioTemporal',
+            ),
+            up_block_types: Tuple[str] = (
+                    'UpBlockSpatioTemporal',
+                    'CrossAttnUpBlockSpatioTemporal',
+                    'CrossAttnUpBlockSpatioTemporal',
+                    'CrossAttnUpBlockSpatioTemporal',
+            ),
+            block_out_channels: Tuple[int] = (320, 640, 1280, 1280),
+            addition_time_embed_dim: int = 256,
+            projection_class_embeddings_input_dim: int = 768,
+            layers_per_block: Union[int, Tuple[int]] = 2,
+            cross_attention_dim: Union[int, Tuple[int]] = 1024,
+            transformer_layers_per_block: Union[int, Tuple[int], Tuple[Tuple]] = 1,
+            num_attention_heads: Union[int, Tuple[int]] = (5, 10, 10, 20),
+            num_frames: int = 25,
+            caption_channels: int = None,
+            extra_caption: bool = False,
+            num_tokens: int = 1,
+            exvideo_cfg: dict = None,
+            attention_type: str = 'default',
+            add_emb: bool = False,
     ):
         super().__init__()
 
@@ -285,7 +286,7 @@ class UNetSpatioTemporalConditionModel(ModelMixin, ConfigMixin, UNet2DConditionL
             self.set_attn_processors_for_caption(num_tokens)
         if exvideo_cfg is not None:
             self.enable_exvideo(**exvideo_cfg)
-    
+
         if attention_type in ['gated', 'gated-text-image']:
             positive_len = 768
             if isinstance(cross_attention_dim, int):
@@ -298,13 +299,12 @@ class UNetSpatioTemporalConditionModel(ModelMixin, ConfigMixin, UNet2DConditionL
                 positive_len=positive_len, out_dim=cross_attention_dim, feature_type=feature_type
             )
 
-
     @classmethod
     def from_unet(cls, unet, dtype_for_2d, dtype_for_3d=torch.float32, tune_all_unet_params=False, **kwargs):
-        in_channels=unet.in_channels
-        cross_attention_dim=unet.cross_attention_dim
-        num_attention_heads=unet.attention_head_dim
-        sample_size=unet.sample_size  # no meaning, for compatibility is_unet_version_less_0_9_0 in diffusers
+        in_channels = unet.in_channels
+        cross_attention_dim = unet.cross_attention_dim
+        num_attention_heads = unet.attention_head_dim
+        sample_size = unet.sample_size  # no meaning, for compatibility is_unet_version_less_0_9_0 in diffusers
         unet3d_model_path = kwargs.pop('unet3d_model_path', None)
         unet3d = cls(
             in_channels=in_channels,
@@ -313,7 +313,7 @@ class UNetSpatioTemporalConditionModel(ModelMixin, ConfigMixin, UNet2DConditionL
             sample_size=sample_size,
             **kwargs,
         )
-        
+
         loaded_names = []
         missing_names = []
         for name, param in unet3d.named_parameters():
@@ -338,7 +338,7 @@ class UNetSpatioTemporalConditionModel(ModelMixin, ConfigMixin, UNet2DConditionL
                         param.requires_grad_(False)
                         param.data = param.to(dtype_for_2d)
                     loaded_names.append(name)
-                else:   
+                else:
                     param.requires_grad_(True)
                     param.to(dtype_for_3d)
                     missing_names.append(name)
@@ -363,6 +363,7 @@ class UNetSpatioTemporalConditionModel(ModelMixin, ConfigMixin, UNet2DConditionL
                         missing_names.remove(name)
             assert len(missing_names) == 0
         return unet3d
+
     def set_num_frames(self, num_frames):
         self.num_frames = num_frames
 
@@ -394,9 +395,9 @@ class UNetSpatioTemporalConditionModel(ModelMixin, ConfigMixin, UNet2DConditionL
         processors = {}
 
         def fn_recursive_add_processors(
-            name: str,
-            module: torch.nn.Module,
-            processors: Dict[str, AttentionProcessor],
+                name: str,
+                module: torch.nn.Module,
+                processors: Dict[str, AttentionProcessor],
         ):
             if hasattr(module, 'get_processor'):
                 processors[f'{name}.processor'] = module.get_processor(return_deprecated_lora=True)
@@ -491,16 +492,16 @@ class UNetSpatioTemporalConditionModel(ModelMixin, ConfigMixin, UNet2DConditionL
             fn_recursive_feed_forward(module, chunk_size, dim)
 
     def forward(
-        self,
-        sample: torch.FloatTensor,
-        timestep: Union[torch.Tensor, float, int],
-        encoder_hidden_states: torch.Tensor,
-        cross_attention_kwargs: Optional[Dict[str, Any]] = None,
-        conv_in_additional_residual: Optional[torch.Tensor] = None,
-        down_block_additional_residuals: Optional[Tuple[torch.Tensor]] = None,
-        mid_block_additional_residual: Optional[torch.Tensor] = None,
-        added_time_ids: torch.Tensor = None,
-        return_dict: bool = True,
+            self,
+            sample: torch.FloatTensor,
+            timestep: Union[torch.Tensor, float, int],
+            encoder_hidden_states: torch.Tensor,
+            cross_attention_kwargs: Optional[Dict[str, Any]] = None,
+            conv_in_additional_residual: Optional[torch.Tensor] = None,
+            down_block_additional_residuals: Optional[Tuple[torch.Tensor]] = None,
+            mid_block_additional_residual: Optional[torch.Tensor] = None,
+            added_time_ids: torch.Tensor = None,
+            return_dict: bool = True,
     ) -> Union[UNetSpatioTemporalConditionOutput, Tuple]:
         r"""
         The [`UNetSpatioTemporalConditionModel`] forward method.
@@ -572,7 +573,7 @@ class UNetSpatioTemporalConditionModel(ModelMixin, ConfigMixin, UNet2DConditionL
             cross_attention_kwargs = cross_attention_kwargs.copy()
             gligen_args = cross_attention_kwargs.pop('gligen')
             cross_attention_kwargs['gligen'] = {'objs': self.position_net(**gligen_args)}
-            
+
         if self.caption_projection is not None:
             encoder_hidden_states = self.caption_projection(encoder_hidden_states)
 
@@ -602,7 +603,7 @@ class UNetSpatioTemporalConditionModel(ModelMixin, ConfigMixin, UNet2DConditionL
             new_down_block_res_samples = ()
 
             for down_block_res_sample, down_block_additional_residual in zip(
-                down_block_res_samples, down_block_additional_residuals
+                    down_block_res_samples, down_block_additional_residuals
             ):
                 down_block_res_sample = down_block_res_sample + down_block_additional_residual
                 new_down_block_res_samples = new_down_block_res_samples + (down_block_res_sample,)
@@ -623,7 +624,7 @@ class UNetSpatioTemporalConditionModel(ModelMixin, ConfigMixin, UNet2DConditionL
 
         # 5. up
         for i, upsample_block in enumerate(self.up_blocks):
-            res_samples = down_block_res_samples[-len(upsample_block.resnets) :]
+            res_samples = down_block_res_samples[-len(upsample_block.resnets):]
             down_block_res_samples = down_block_res_samples[: -len(upsample_block.resnets)]
 
             if hasattr(upsample_block, 'has_cross_attention') and upsample_block.has_cross_attention:
@@ -655,4 +656,3 @@ class UNetSpatioTemporalConditionModel(ModelMixin, ConfigMixin, UNet2DConditionL
             return (sample,)
 
         return UNetSpatioTemporalConditionOutput(sample=sample)
-

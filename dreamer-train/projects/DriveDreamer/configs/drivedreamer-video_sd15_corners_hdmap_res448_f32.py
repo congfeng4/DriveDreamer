@@ -1,11 +1,13 @@
 import os
+
 # ============= PATH ===================
 proj_name = os.path.basename(__file__)[:-3]
 exp_dir = '/mnt/data-2/users/jeff/exp/'  # PATH TO YOUR EXPERIMENT FOLDER
 project_dir = os.path.join(exp_dir, proj_name)
 train_data = '/mnt/pfs/datasets/nuscenes/v1.0-trainval/cam_all_train/v0.0.2'
 test_data = '/mnt/pfs/datasets/nuscenes/v1.0-trainval/cam_all_val/v0.0.2'
-ckpt_2d = ['YOUR_PATH_HERE/exp/drivedreamer-img_sd15_corners_hdmap_res448/models/checkpoint_epoch_20_step_27980/drivedreamer']
+ckpt_2d = [
+    'YOUR_PATH_HERE/exp/drivedreamer-img_sd15_corners_hdmap_res448/models/checkpoint_epoch_20_step_27980/drivedreamer']
 # ============= Data Parameters =================
 img_width = 448
 num_frames = 32
@@ -20,9 +22,9 @@ hdmap_dim = 8  # hidden dim of hdmap feature
 max_objs_num = 100  # max number of objects in one frame
 # ============= Train Parameters =================
 num_machines = 1
-gpu_ids = [0,1,2,3,4,5,6,7]
+gpu_ids = [0, 1, 2, 3, 4, 5, 6, 7]
 distributed_type = None  # DEEPSPEED
-deepspeed_config = None # dict(deepspeed_config_file=os.path.join(os.path.dirname(__file__), '..', '..', 'accelerate_configs/zero2.json'))
+deepspeed_config = None  # dict(deepspeed_config_file=os.path.join(os.path.dirname(__file__), '..', '..', 'accelerate_configs/zero2.json'))
 activation_checkpointing = True
 max_epochs = 20
 batch_size = 1
