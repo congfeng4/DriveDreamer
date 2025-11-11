@@ -26,31 +26,31 @@ from dreamer_datasets import BaseProcessor, Dataset, LmdbWriter, PklWriter, boxe
 class Options:
     def __init__(self):
         self.parser = argparse.ArgumentParser(description="options for nusc converter")
-        self.parser.add_argument('--nusc_version', 
+        self.parser.add_argument('--nusc_version',
                                 help='nuscenes version',
                                 type=str,
                                 default='v1.0-trainval',
                                 choices=['v1.0-trainval', 'v1.0-mini'])
-        self.parser.add_argument('--data_root', 
+        self.parser.add_argument('--data_root',
                                 help='root path of the raw nuscenes data',
                                 type=str,
                                 default='/mnt/pfs/datasets/public_datasets/nuscenes')
-        self.parser.add_argument('--save_root', 
+        self.parser.add_argument('--save_root',
                                 help='save path of the processed nuscenes data (in the dreamer format)',
                                 type=str,
                                 default='/mnt/data/dreamer_dataset')
-        self.parser.add_argument('--only_adjust_labels', 
+        self.parser.add_argument('--only_adjust_labels',
                                 help='only adjust labels, do not convert datasets',
                                 action='store_true')
-        self.parser.add_argument('--adjust_src_version', 
+        self.parser.add_argument('--adjust_src_version',
                                 help='source version dataset to be adjuected',
                                 type=str,
                                 default='v0.0.1')
-        self.parser.add_argument('--adjust_tar_version', 
+        self.parser.add_argument('--adjust_tar_version',
                                 help='target version dataset after ajected',
                                 type=str,
                                 default='v0.0.2')
-        self.parser.add_argument('--mode', 
+        self.parser.add_argument('--mode',
                                 help='covert mode, cam_all is 12Hz camera data, cam is 2Hz keyframe data, lidar is raw lidar data. For DriveDraemer 12Hz videos, cam_all is enough',
                                 type=str,
                                 nargs='+',
@@ -545,7 +545,7 @@ class NuScenesConverter:
                     idx_train += 1
                 else:
                     idx_val += 1
-                    
+
                 label_dict.update(self._get_cam_label(cam_token))
                 if sample['scene_token'] in train_scenes_token:
                     label_writers['train'].write_dict(label_dict)
@@ -618,7 +618,7 @@ class NuScenesConverter:
                         idx_train += 1
                     else:
                         idx_val += 1
-                        
+
                     label_dict.update(self._get_cam_label(cam_token))
                     if scene_token in train_scenes_token:
                         label_writers['train'].write_dict(label_dict)
@@ -658,7 +658,7 @@ class NuScenesConverter:
                 hdmap_writer.write_image(data_index, image_hdmap)
             hdmap_writer.write_config(data_name='image_hdmap')
             hdmap_writer.close()
-            
+
     def nusc_info_idx(self):
         train_scenes_token, val_scenes_token = self._get_scenes_token()
         data_idxes = []
@@ -685,8 +685,8 @@ class NuScenesConverter:
                         total_idx += 1
                         cam_idx += 1
             data_idxes.append(data_idx)
-            
-        
+
+
         data_idxes2 = []
         for trainval_idx, scene_tokens in enumerate([train_scenes_token, val_scenes_token]):
             total_idx = 0
@@ -696,7 +696,7 @@ class NuScenesConverter:
                 scene = self.nusc.get('scene', scene_token)
                 sample_token = scene['first_sample_token']
                 first_sample = self.nusc.get('sample', sample_token)
-                for cam_name in self.cam_types:   
+                for cam_name in self.cam_types:
                     this_cam_token = self.nusc.get('sample_data', first_sample['data'][cam_name])['token']
                     # non-key-frame
                     frame_idx = 0
@@ -720,7 +720,7 @@ class NuScenesConverter:
                                             this_time_diff = abs(this_cam_time_stamp - cam_front_time_stamp)
                                             this_data_idx2_dict['multiview_start_idx'][cam_name_] = \
                                             data_idxes[trainval_idx][scene_token][cam_name_][this_add]['idx']
-                                            
+
                         data_idx2.append(this_data_idx2_dict)
                         cam_record = self.nusc.get('sample_data', this_cam_token)
                         future_cam_token = cam_record['next']
@@ -730,7 +730,7 @@ class NuScenesConverter:
                         frame_idx += 1
                     for video_len_idx in video_length_idxes:
                         data_idx2[video_len_idx]['video_length'] = len(video_length_idxes)
-            data_idxes2.append(data_idx2)   
+            data_idxes2.append(data_idx2)
         return data_idxes2
 
 
@@ -1072,11 +1072,11 @@ def view_points_depth(points, view, normalize):
 def main():
     opt = Options().parse()
     nusc_version = opt.nusc_version
-    data_dir = os.path.join(opt.data_root, nusc_version)
+    # data_dir = opt.os.path.join(opt.data_root, nusc_version)
     save_root = opt.save_root
     save_path = os.path.join(save_root, nusc_version)
-    nusc_convertor = NuScenesConverter(data_dir=data_dir, version=nusc_version, save_path=save_path, save_version='v0.0.1')
-    
+    nusc_convertor = NuScenesConverter(data_dir=opt.data_root, version=nusc_version, save_path=save_path, save_version='v0.0.1')
+
     # STEP1: convert nuscenes data to dreamer dataset, this may take one day
     if not opt.only_adjust_labels:
         nusc_convertor(mode=opt.mode)
@@ -1092,8 +1092,8 @@ def main():
         label_path = os.path.join(data_path, src_version, 'labels')
         dataset = load_dataset(label_path)
         processor = NuScenesProcessor(os.path.join(data_path, tar_version, 'labels'), add_dict=data_idx)
-        dataset.process(processor, num_workers=4)
-        
+        dataset.process(processor, num_workers=6)
+
         for subfile in os.listdir(os.path.join(data_path, src_version)):
             if subfile == 'labels':
                 continue

@@ -3,8 +3,8 @@
 
 **1. Create a conda virtual environment and activate it.**
 ```shell
-conda create -n drivedreamer python=3.10 -y
-conda activate drivedreamer
+conda create -n py310 python=3.10 -y
+conda activate py310
 ```
 
 **2. Install PyTorch and torchvision (tested on torch>=2.2 & cuda=12.1).**
