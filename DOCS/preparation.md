@@ -27,7 +27,7 @@ os.environ['XDG_CACHE_HOME'] = $PATH_TO_XDG_CACHE
 python ./dreamer-datasets/dd_scripts/converters/nuscenes_converter.py \
     --nusc_version v1.0-trainval \
     --data_root $ROOT_PATH_RAW_NUSCENES_DATA \
-    --save_root $SAVE_PATH_PROCESSED_NUSCENES_DATA \
+    --save_root $SAVE_PATH_PROCESSED_NUSCENES_DATA
 ```
 **Folder structure:**
 ```
