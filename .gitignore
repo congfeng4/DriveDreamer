@@ -144,3 +144,5 @@ dmypy.json
 /nuscenes/
 /data/
 *.zip
+/exp
+/models
