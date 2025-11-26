@@ -2,10 +2,10 @@ import os
 
 # ============= PATH ===================
 proj_name = os.path.basename(__file__)[:-3]
-exp_dir = '/public/congfeng4/AutoData/DriveDreamer/exp'  # PATH TO YOUR EXPERIMENT FOLDER
+exp_dir = '/home/congfeng/DriveDreamer/exp'  # PATH TO YOUR EXPERIMENT FOLDER
 project_dir = os.path.join(exp_dir, proj_name)
-train_data = '/public/congfeng4/AutoData/DriveDreamer/data/v1.0-mini/cam_all_train/v0.0.1'
-test_data = '/public/congfeng4/AutoData/DriveDreamer/data/v1.0-mini/cam_all_val/v0.0.1'
+train_data = '/home/congfeng/DriveDreamer/data/v1.0-mini/cam_all_train/v0.0.2'
+test_data = '/home/congfeng/DriveDreamer/data/v1.0-mini/cam_all_val/v0.0.2'
 # ============= Data Parameters =================
 img_width = 448
 # ============= Model Parameters =================
@@ -14,7 +14,7 @@ hdmap_dim = 8  # hidden dim of hdmap feature
 max_objs_num = 100  # max number of objects in one frame
 # ============= Train Parameters =================
 num_machines = 1
-gpu_ids = [0]
+gpu_ids = [3]
 distributed_type = None  # DEEPSPEED
 deepspeed_config = None  # dict(deepspeed_config_file=os.path.join(os.path.dirname(__file__), '..', '..', 'accelerate_configs/zero2.json'))
 activation_checkpointing = False

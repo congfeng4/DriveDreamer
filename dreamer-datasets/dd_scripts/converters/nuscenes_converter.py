@@ -57,6 +57,10 @@ class Options:
                                  type=str,
                                  nargs='+',
                                  default=['cam_all'])
+        self.parser.add_argument('--njobs',
+                                 help='',
+                                 type=int,
+                                 default=os.cpu_count())
 
     def parse(self):
         self.options = self.parser.parse_args()
@@ -1096,7 +1100,7 @@ def main():
         label_path = os.path.join(data_path, src_version, 'labels')
         dataset = load_dataset(label_path)
         processor = NuScenesProcessor(os.path.join(data_path, tar_version, 'labels'), add_dict=data_idx)
-        dataset.process(processor, num_workers=6)
+        dataset.process(processor, num_workers=opt.njobs)
 
         for subfile in os.listdir(os.path.join(data_path, src_version)):
             if subfile == 'labels':

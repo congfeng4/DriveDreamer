@@ -22,10 +22,10 @@ def init_paths(base_dir=None, project_name=None):
         else:
             os.environ['PYTHONPATH'] = python_path
 
-    os.environ['TORCH_HOME'] = '/public/congfeng4/AutoData/DriveDreamer/models/'
-    os.environ['TRANSFORMERS_CACHE'] = '/public/congfeng4/AutoData/DriveDreamer/models/'
-    os.environ['HUGGINGFACE_HUB_CACHE'] = '/public/congfeng4/AutoData/DriveDreamer/models/'
-    os.environ['XDG_CACHE_HOME'] = '/public/congfeng4/AutoData/DriveDreamer/models/xdg/'
+    os.environ['TORCH_HOME'] = '/home/congfeng/DriveDreamer/models/'
+    os.environ['TRANSFORMERS_CACHE'] = '/home/congfeng/DriveDreamer/models/'
+    os.environ['HUGGINGFACE_HUB_CACHE'] = '/home/congfeng/DriveDreamer/models/'
+    os.environ['XDG_CACHE_HOME'] = '/home/congfeng/DriveDreamer/models/xdg/'
 
     # For users with huggingface network issues, uncomment the following lines for speedding up downloading
     # os.environ['HF_ENDPOINT'] = 'https:/hf-mirror.com'
