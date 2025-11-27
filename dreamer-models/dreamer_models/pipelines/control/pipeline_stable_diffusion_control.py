@@ -235,6 +235,7 @@ class StableDiffusionControlPipeline(
             generator = torch.Generator(device=device)
             generator.manual_seed(seed)
 
+
         if prompt is not None or prompt_embeds is not None:
             if prompt is not None and isinstance(prompt, str):
                 batch_size = 1

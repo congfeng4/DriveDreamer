@@ -121,7 +121,7 @@ config = dict(
         # max_grad_norm=1.0,
     ),
     test=dict(
-        mixed_precision='fp16',
+        # mixed_precision='fp16',
         save_dir=os.path.join(project_dir, 'vis'),
         guidance_scale=guidance_scale,
     ),

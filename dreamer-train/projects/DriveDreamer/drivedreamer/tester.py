@@ -146,6 +146,7 @@ def get_data(batch_dict, key, is_video=False):
         data = batch_dict[key]
         if not is_video:
             data = data[0]
+        return data
     else:
         return None
 
