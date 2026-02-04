@@ -146,3 +146,4 @@ dmypy.json
 *.zip
 /exp
 /models
+.DS_Store

@@ -6,6 +6,11 @@ from tqdm import tqdm
 from ..utils import Timer
 
 
+def identity_collate(x):
+    """Identity collate function that returns input unchanged."""
+    return x
+
+
 class BaseProcessor:
     def __call__(self, data_dict):
         return data_dict
@@ -70,7 +75,7 @@ class BaseDataset(torch.utils.data.Dataset):
         self.transform = processor
         dataloader = torch.utils.data.DataLoader(
             self,
-            collate_fn=lambda x: x,
+            collate_fn=identity_collate,
             batch_size=1,
             num_workers=num_workers,
         )

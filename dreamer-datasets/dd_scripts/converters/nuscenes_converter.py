@@ -169,8 +169,8 @@ class NuScenesConverter:
             dataset.save(os.path.join(self.save_path, 'cam_' + split, self.save_version))
 
     def convert_cam_all(self):
-        self.convert_cam_all_labels()
-        self.convert_cam_all_images()
+        # self.convert_cam_all_labels()
+        # self.convert_cam_all_images()
         self.convert_cam_all_hdmaps()
         for split in self.splits:
             datasets = [
@@ -1088,7 +1088,9 @@ def main():
     # STEP1: convert nuscenes data to dreamer dataset, this may take one day
     if not opt.only_adjust_labels:
         nusc_convertor(mode=opt.mode)
+    return
 
+    # XXX(FC): 这个不用跑的，只是例子而已。
     # STEP2: example to alter labels & add labels in data_dicts, this only take minutes
     # users can customized their own code here
     src_version = opt.adjust_src_version
